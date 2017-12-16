@@ -3,6 +3,9 @@ import {
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_CATEGORIES_FAILURE,
+  FETCH_POSTS_REQUEST,
+  FETCH_POSTS_SUCCESS,
+  FETCH_POSTS_FAILURE,
 } from '../actions';
 
 const categories = (state = {}, action) => {
@@ -30,6 +33,32 @@ const categories = (state = {}, action) => {
   }
 };
 
+const posts = (state = {}, action) => {
+  switch (action.type) {
+    case FETCH_POSTS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case FETCH_POSTS_SUCCESS:
+      return {
+        ...state,
+        posts: action.posts,
+        isFetching: false,
+      };
+    case FETCH_POSTS_FAILURE:
+      return {
+        ...state,
+        posts: null,
+        error: action.error,
+        isFetching: false,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   categories,
+  posts,
 });

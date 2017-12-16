@@ -1,9 +1,8 @@
 import React from 'react';
-import Title from './Title';
 
 const Header = () => (
   <div>
-    <Title>Readable</Title>
+    <h1>Readable</h1>
   </div>
 );
 

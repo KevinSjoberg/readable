@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import Home from './components/Home';
 import Header from './components/Header';
 import CategoryList from './components/CategoryList';
-import { fetchCategories } from './actions';
+import { fetchCategories, fetchPosts } from './actions';
 
 class App extends Component {
   componentDidMount() {
     this.props.dispatch(fetchCategories());
+    this.props.dispatch(fetchPosts());
   }
 
   render() {

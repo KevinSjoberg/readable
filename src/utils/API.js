@@ -10,6 +10,10 @@ const buildHeaders = () => {
 const fetchCategories = () =>
   fetch(`${HOST}/categories`, { headers: buildHeaders() });
 
+const fetchPosts = () =>
+  fetch(`${HOST}/posts`, { headers: buildHeaders() });
+
 export default {
   fetchCategories,
+  fetchPosts,
 };

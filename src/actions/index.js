@@ -23,3 +23,27 @@ export const fetchCategories = () => (dispatch) => {
     .then(json => dispatch(fetchCategoriesSuccess(json.categories)))
     .catch(error => dispatch(fetchCategoriesFailure(error)));
 };
+
+export const FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST';
+export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
+export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
+
+const fetchPostsSuccess = posts => ({
+  type: FETCH_POSTS_SUCCESS,
+  posts,
+});
+
+const fetchPostsFailure = error => ({
+  type: FETCH_POSTS_FAILURE,
+  error,
+});
+
+export const fetchPosts = () => (dispatch) => {
+  dispatch({ type: FETCH_POSTS_REQUEST });
+
+  API
+    .fetchPosts()
+    .then(response => response.json())
+    .then(json => dispatch(fetchPostsSuccess(json)))
+    .catch(error => dispatch(fetchPostsFailure(error)));
+};
