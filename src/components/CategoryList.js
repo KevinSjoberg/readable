@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Category from './Category';
 
-const CategoryList = props => (
+const CategoryList = ({ selected, categories }) => (
   <div>
-    {props.categories.map(({ name, path }) => (
-      <Category key={path} name={name} path={path} />
+    {categories.map(({ name, path }) => (
+      <Category key={path} selected={path === selected} name={name} path={path} />
     ))}
   </div>
 );
 
 CategoryList.defaultProps = {
   categories: [],
+  selected: null,
 };
 
 CategoryList.propTypes = {
@@ -20,6 +21,7 @@ CategoryList.propTypes = {
     name: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
   })),
+  selected: PropTypes.string,
 };
 
 const mapStateToProps = state => ({

@@ -8,7 +8,12 @@ import {
   FETCH_POSTS_FAILURE,
 } from '../actions';
 
-const categories = (state = {}, action) => {
+const initialCategoriesState = {
+  isFetching: false,
+  categories: [],
+};
+
+const categories = (state = initialCategoriesState, action) => {
   switch (action.type) {
     case FETCH_CATEGORIES_REQUEST:
       return {
@@ -33,7 +38,12 @@ const categories = (state = {}, action) => {
   }
 };
 
-const posts = (state = {}, action) => {
+const initialPostsState = {
+  isFetching: false,
+  posts: [],
+};
+
+const posts = (state = initialPostsState, action) => {
   switch (action.type) {
     case FETCH_POSTS_REQUEST:
       return {

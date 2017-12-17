@@ -1,33 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CategoryList from './CategoryList';
 import PostList from './PostList';
-import { fetchCategories, fetchPosts } from '../actions';
+import CategoryList from './CategoryList';
+import { fetchCategories, fetchPostsByCategory } from '../actions';
 
-class HomePage extends Component {
+class CategoryPage extends Component {
   componentDidMount() {
+    const { params: { category } } = this.props.match;
+
     this.props.fetchCategories();
-    this.props.fetchPosts();
+    this.props.fetchPosts(category);
   }
 
   render() {
+    const { posts, match: { params: { category } } } = this.props;
     return (
       <div>
-        <CategoryList />
-        <PostList posts={this.props.posts} />
+        <CategoryList selected={category} />
+        <PostList posts={posts} />
       </div>
     );
   }
 }
 
-HomePage.defaultProps = {
+CategoryPage.defaultProps = {
   posts: [],
 };
 
-HomePage.propTypes = {
+CategoryPage.propTypes = {
   fetchCategories: PropTypes.func.isRequired,
   fetchPosts: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      category: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     timestamp: PropTypes.number.isRequired,
@@ -41,13 +49,15 @@ HomePage.propTypes = {
   })),
 };
 
-const mapStateToProps = state => ({
-  posts: state.posts.posts,
+const mapStateToProps = (state, ownProps) => ({
+  posts: state.posts.posts.filter(post => (
+    post.category === ownProps.match.params.category
+  )),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchCategories: () => dispatch(fetchCategories()),
-  fetchPosts: () => dispatch(fetchPosts()),
+  fetchPosts: category => dispatch(fetchPostsByCategory(category)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryPage);

@@ -47,3 +47,13 @@ export const fetchPosts = () => (dispatch) => {
     .then(json => dispatch(fetchPostsSuccess(json)))
     .catch(error => dispatch(fetchPostsFailure(error)));
 };
+
+export const fetchPostsByCategory = category => (dispatch) => {
+  dispatch({ type: FETCH_CATEGORIES_REQUEST });
+
+  API
+    .fetchPostsByCategory(category)
+    .then(response => response.json())
+    .then(json => dispatch(fetchPostsSuccess(json)))
+    .catch(error => dispatch(fetchPostsFailure(error)));
+};
