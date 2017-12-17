@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Home from './components/Home';
+import HomePage from './components/HomePage';
 import Header from './components/Header';
 import CategoryList from './components/CategoryList';
 import { fetchCategories, fetchPosts } from './actions';
@@ -19,7 +19,7 @@ class App extends Component {
         <div>
           <Header />
           <CategoryList />
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={HomePage} />
         </div>
       </Router>
     );

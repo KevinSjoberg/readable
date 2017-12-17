@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PostList from './PostList';
 
-const Home = ({ posts }) => (
+const HomePage = ({ posts }) => (
   <PostList posts={posts} />
 );
 
@@ -11,11 +11,11 @@ const mapStateToProps = state => ({
   posts: state.posts.posts,
 });
 
-Home.defaultProps = {
+HomePage.defaultProps = {
   posts: [],
 };
 
-Home.propTypes = {
+HomePage.propTypes = {
   posts: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     timestamp: PropTypes.number.isRequired,
@@ -29,4 +29,4 @@ Home.propTypes = {
   })),
 };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(HomePage);
