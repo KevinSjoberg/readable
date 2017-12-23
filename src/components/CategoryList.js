@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { ListGroup } from 'reactstrap';
 import Category from './Category';
 import { fetchCategories } from '../actions';
 
@@ -12,11 +13,11 @@ class CategoryList extends Component {
   render() {
     const { categories } = this.props;
     return (
-      <ul>
+      <ListGroup>
         {categories.map(category => (
           <Category key={category.path} {...category} />
         ))}
-      </ul>
+      </ListGroup>
     );
   }
 }

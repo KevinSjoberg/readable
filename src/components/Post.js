@@ -1,5 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  CardText,
+  CardFooter,
+} from 'reactstrap';
+import moment from 'moment';
 
 const Post = ({
   id,
@@ -12,17 +21,14 @@ const Post = ({
   deleted,
   commentCount,
 }) => (
-  <div>
-    <p>{id}</p>
-    <p>{timestamp}</p>
-    <p>{title}</p>
-    <p>{body}</p>
-    <p>{author}</p>
-    <p>{category}</p>
-    <p>{voteScore}</p>
-    <p>{deleted}</p>
-    <p>{commentCount}</p>
-  </div>
+  <Card className="mb-3">
+    <CardBody>
+      <CardTitle>{title}</CardTitle>
+      <CardSubtitle className="mb-3 text-muted">Written by{author} in {category} {moment(timestamp).fromNow()}</CardSubtitle>
+      <CardText>{body}</CardText>
+    </CardBody>
+    <CardFooter className="text-muted">{commentCount} comments</CardFooter>
+  </Card>
 );
 
 Post.propTypes = {
