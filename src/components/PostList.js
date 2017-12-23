@@ -15,17 +15,7 @@ PostList.defaultProps = {
 };
 
 PostList.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    timestamp: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    voteScore: PropTypes.number.isRequired,
-    deleted: PropTypes.bool.isRequired,
-    commentCount: PropTypes.number.isRequired,
-  })),
+  posts: PropTypes.arrayOf(PropTypes.shape(Post.propTypes)),
 };
 
 export default PostList;

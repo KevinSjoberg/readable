@@ -8,18 +8,13 @@ const buildHeaders = () => {
   return headers;
 };
 
-const fetchCategories = () =>
-  fetch(`${HOST}/categories`, { headers: buildHeaders() });
-
-const fetchPosts = () =>
-  fetch(`${HOST}/posts`, { headers: buildHeaders() });
-
-const fetchPostsByCategory = category =>
-  fetch(`${HOST}/${category}/posts`, { headers: buildHeaders() });
-
+const get = path =>
+  fetch(`${HOST}/${path}`, { headers: buildHeaders() });
 
 export default {
-  fetchCategories,
-  fetchPosts,
-  fetchPostsByCategory,
+  fetchCategories: () => get('categories'),
+  fetchPosts: (category) => {
+    const path = category ? `${category}/posts` : 'posts';
+    return get(path);
+  },
 };

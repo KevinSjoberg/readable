@@ -1,31 +1,40 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Category from './Category';
+import { fetchCategories } from '../actions';
 
-const CategoryList = ({ selected, categories }) => (
-  <div>
-    {categories.map(({ name, path }) => (
-      <Category key={path} selected={path === selected} name={name} path={path} />
-    ))}
-  </div>
-);
+class CategoryList extends Component {
+  componentDidMount() {
+    this.props.fetchCategories();
+  }
+
+  render() {
+    const { categories } = this.props;
+    return (
+      <ul>
+        {categories.map(category => (
+          <Category key={category.path} {...category} />
+        ))}
+      </ul>
+    );
+  }
+}
 
 CategoryList.defaultProps = {
   categories: [],
-  selected: null,
 };
 
 CategoryList.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-  })),
-  selected: PropTypes.string,
+  categories: PropTypes.arrayOf(PropTypes.shape(Category.propTypes)),
+  fetchCategories: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   categories: state.categories.categories,
 });
 
-export default connect(mapStateToProps)(CategoryList);
+export default connect(
+  mapStateToProps,
+  { fetchCategories },
+)(CategoryList);

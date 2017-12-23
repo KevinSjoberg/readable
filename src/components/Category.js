@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const Category = ({ selected, name, path }) => (
-  <div>{name} - {path} - {selected.toString()}</div>
+const Category = ({ name, path }) => (
+  <li><Link to={path}>{name}</Link></li>
 );
 
 Category.propTypes = {
-  selected: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
 };

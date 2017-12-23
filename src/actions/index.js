@@ -1,4 +1,4 @@
-import API from '../utils/API';
+import API from '../utils/api';
 
 export const FETCH_CATEGORIES_REQUEST = 'FETCH_CATEGORIES_REQUEST';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
@@ -38,21 +38,11 @@ const fetchPostsFailure = error => ({
   error,
 });
 
-export const fetchPosts = () => (dispatch) => {
+export const fetchPosts = category => (dispatch) => {
   dispatch({ type: FETCH_POSTS_REQUEST });
 
   API
-    .fetchPosts()
-    .then(response => response.json())
-    .then(json => dispatch(fetchPostsSuccess(json)))
-    .catch(error => dispatch(fetchPostsFailure(error)));
-};
-
-export const fetchPostsByCategory = category => (dispatch) => {
-  dispatch({ type: FETCH_CATEGORIES_REQUEST });
-
-  API
-    .fetchPostsByCategory(category)
+    .fetchPosts(category)
     .then(response => response.json())
     .then(json => dispatch(fetchPostsSuccess(json)))
     .catch(error => dispatch(fetchPostsFailure(error)));
