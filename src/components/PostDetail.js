@@ -4,8 +4,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { fetchPost } from '../actions';
+import { fetchPost, upvote, downvote } from '../actions';
 import { getPostbyId } from '../reducers';
+import Vote from './Vote';
 
 class PostDetail extends Component {
   componentDidMount() {
@@ -19,18 +20,29 @@ class PostDetail extends Component {
     }
 
     const {
-      author,
-      body,
-      category,
-      timestamp,
-      title,
-    } = this.props.post;
+      upvote: doUpvote,
+      downvote: doDownvote,
+      post: {
+        author,
+        body,
+        category,
+        id,
+        timestamp,
+        title,
+        voteScore,
+      },
+    } = this.props;
 
     return (
       <div>
         <h1>{title}</h1>
         <p className="text-muted">Written by{author} in {category} {moment(timestamp).fromNow()}</p>
         <p>{body}</p>
+        <Vote
+          score={voteScore}
+          onUpvoteClick={() => doUpvote('post', id)}
+          onDownvoteClick={() => doDownvote('post', id)}
+        />
       </div>
     );
   }
@@ -58,6 +70,8 @@ PostDetail.propTypes = {
     deleted: PropTypes.bool.isRequired,
     commentCount: PropTypes.number.isRequired,
   }),
+  upvote: PropTypes.func.isRequired,
+  downvote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -66,5 +80,5 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default withRouter(connect(
   mapStateToProps,
-  { fetchPost },
+  { fetchPost, upvote, downvote },
 )(PostDetail));
