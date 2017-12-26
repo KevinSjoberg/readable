@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -18,16 +19,17 @@ const Post = ({
   author,
   category,
   voteScore,
-  deleted,
   commentCount,
 }) => (
   <Card className="mb-3">
     <CardBody>
-      <CardTitle>{title}</CardTitle>
+      <CardTitle><Link to={`${category}/${id}`}>{title}</Link></CardTitle>
       <CardSubtitle className="mb-3 text-muted">Written by{author} in {category} {moment(timestamp).fromNow()}</CardSubtitle>
       <CardText>{body}</CardText>
     </CardBody>
-    <CardFooter className="text-muted">{commentCount} comments</CardFooter>
+    <CardFooter className="text-muted">
+      {commentCount} comments
+    </CardFooter>
   </Card>
 );
 

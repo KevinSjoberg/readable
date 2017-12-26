@@ -47,3 +47,27 @@ export const fetchPosts = category => (dispatch) => {
     .then(json => dispatch(fetchPostsSuccess(json)))
     .catch(error => dispatch(fetchPostsFailure(error)));
 };
+
+export const FETCH_POST_REQUEST = 'FETCH_POST_REQUEST';
+export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS';
+export const FETCH_POST_FAILURE = 'FETCH_POST_FAILURE';
+
+const fetchPostSuccess = post => ({
+  type: FETCH_POST_SUCCESS,
+  post,
+});
+
+const fetchPostFailure = error => ({
+  type: FETCH_POST_FAILURE,
+  error,
+});
+
+export const fetchPost = id => (dispatch) => {
+  dispatch({ type: FETCH_POST_REQUEST });
+
+  API
+    .fetchPost(id)
+    .then(response => response.json())
+    .then(json => dispatch(fetchPostSuccess(json)))
+    .catch(error => dispatch(fetchPostFailure(error)));
+};

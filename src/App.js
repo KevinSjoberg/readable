@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
+
 import CategoryList from './components/CategoryList';
 import FilteredPostList from './components/FilteredPostList';
+import PostDetail from './components/PostDetail';
 
 class App extends Component {
   render() {
@@ -21,6 +23,7 @@ class App extends Component {
               </Col>
               <Col xs="8">
                 <Route exact path="/:category?" component={FilteredPostList} />
+                <Route exact path="/:category/:id" component={PostDetail} />
               </Col>
             </Row>
           </Container>

@@ -12,7 +12,14 @@ const get = path =>
   fetch(`${HOST}/${path}`, { headers: buildHeaders() });
 
 export default {
-  fetchCategories: () => get('categories'),
+  fetchCategories: () => {
+    const path = 'categories';
+    return get(path);
+  },
+  fetchPost: (id) => {
+    const path = `posts/${id}`;
+    return get(path);
+  },
   fetchPosts: (category) => {
     const path = category ? `${category}/posts` : 'posts';
     return get(path);
