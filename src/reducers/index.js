@@ -9,6 +9,12 @@ import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
+  UPVOTE_ENTITY_REQUEST,
+  UPVOTE_ENTITY_SUCCESS,
+  UPVOTE_ENTITY_FAILURE,
+  DOWNVOTE_ENTITY_REQUEST,
+  DOWNVOTE_ENTITY_SUCCESS,
+  DOWNVOTE_ENTITY_FAILURE,
 } from '../actions';
 
 const initialCategoriesState = {
@@ -43,6 +49,7 @@ const categories = (state = initialCategoriesState, action) => {
 
 const initialPostsState = {
   isFetching: false,
+  isVoting: false,
   posts: [],
 };
 
@@ -77,6 +84,32 @@ const posts = (state = initialPostsState, action) => {
         ...state,
         error: action.error,
         isFetching: false,
+      };
+    case UPVOTE_ENTITY_REQUEST:
+    case DOWNVOTE_ENTITY_REQUEST:
+      return {
+        ...state,
+        isVoting: true,
+      };
+    case UPVOTE_ENTITY_SUCCESS:
+    case DOWNVOTE_ENTITY_SUCCESS: {
+      const index = state.posts.findIndex(post => post.id === action.post.id);
+      const newPosts = index === -1
+        ? state.posts
+        : Object.assign([], state.posts, { [index]: action.post });
+
+      return {
+        ...state,
+        posts: newPosts,
+        isVoting: false,
+      };
+    }
+    case UPVOTE_ENTITY_FAILURE:
+    case DOWNVOTE_ENTITY_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+        isVoting: false,
       };
     default:
       return state;

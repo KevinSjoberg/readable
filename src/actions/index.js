@@ -71,3 +71,31 @@ export const fetchPost = id => (dispatch) => {
     .then(json => dispatch(fetchPostSuccess(json)))
     .catch(error => dispatch(fetchPostFailure(error)));
 };
+
+export const UPVOTE_ENTITY_REQUEST = 'UPVOTE_ENTITY_REQUEST';
+export const UPVOTE_ENTITY_SUCCESS = 'UPVOTE_ENTITY_SUCCESS';
+export const UPVOTE_ENTITY_FAILURE = 'UPVOTE_ENTITY_FAILURE';
+export const DOWNVOTE_ENTITY_REQUEST = 'DOWNVOTE_ENTITY_REQUEST';
+export const DOWNVOTE_ENTITY_SUCCESS = 'DOWNVOTE_ENTITY_SUCCESS';
+export const DOWNVOTE_ENTITY_FAILURE = 'DOWNVOTE_ENTITY_FAILURE';
+
+
+export const upvote = (entity, id) => (dispatch) => {
+  dispatch({ type: UPVOTE_ENTITY_REQUEST });
+
+  API
+    .upvote(entity, id)
+    .then(response => response.json())
+    .then(post => dispatch({ type: UPVOTE_ENTITY_SUCCESS, post }))
+    .catch(error => dispatch({ type: UPVOTE_ENTITY_FAILURE, error }));
+};
+
+export const downvote = (entity, id) => (dispatch) => {
+  dispatch({ type: UPVOTE_ENTITY_REQUEST });
+
+  API
+    .downvote(entity, id)
+    .then(response => response.json())
+    .then(post => dispatch({ type: DOWNVOTE_ENTITY_SUCCESS, post }))
+    .catch(error => dispatch({ type: DOWNVOTE_ENTITY_FAILURE, error }));
+};
