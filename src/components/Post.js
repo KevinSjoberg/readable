@@ -1,7 +1,6 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   Card,
@@ -12,7 +11,7 @@ import {
   CardTitle,
 } from 'reactstrap';
 
-import { removePost } from '../actions';
+import PostActions from './PostActions';
 import PostVote from './PostVote';
 
 const Post = ({
@@ -23,7 +22,6 @@ const Post = ({
   author,
   category,
   commentCount,
-  removePost: doRemovePost,
 }) => (
   <Card className="mb-3">
     <CardBody>
@@ -35,13 +33,11 @@ const Post = ({
       </CardSubtitle>
       <CardText>{body}</CardText>
     </CardBody>
-    <CardFooter className="text-muted">
-      <div className="float-left">
-        <span>{commentCount} comments</span>
-      </div>
-      <div className="float-right">
+    <CardFooter className="d-flex justify-content-between text-muted">
+      <span className="mr-auto">{commentCount} comments</span>
+      <div className="d-flex justify-content-between w-25">
         <PostVote postId={id} />
-        <button onClick={() => doRemovePost(id)}>Remove</button>
+        <PostActions postId={id} />
       </div>
     </CardFooter>
   </Card>
@@ -55,7 +51,6 @@ Post.propTypes = {
   id: PropTypes.string.isRequired,
   timestamp: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  removePost: PropTypes.func.isRequired,
 };
 
-export default connect(null, { removePost })(Post);
+export default Post;

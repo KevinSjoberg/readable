@@ -57,4 +57,8 @@ export default {
     const path = `posts/${postId}/comments`;
     return doGet(path);
   },
+  removeComment: (id) => {
+    const path = `comments/${id}`;
+    return doDelete(path);
+  }
 };

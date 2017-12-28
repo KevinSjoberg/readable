@@ -6,8 +6,9 @@ import { withRouter } from 'react-router-dom';
 
 import { fetchPost } from '../actions';
 import { getPostById } from '../reducers';
-import PostVote from './PostVote';
 import FilteredCommentList from './FilteredCommentList';
+import PostActions from './PostActions';
+import PostVote from './PostVote';
 
 class PostDetail extends Component {
   componentDidMount() {
@@ -36,7 +37,12 @@ class PostDetail extends Component {
         <h1>{title}</h1>
         <p className="text-muted">Written by{author} in {category} {moment(timestamp).fromNow()}</p>
         <p>{body}</p>
-        <PostVote postId={id} />
+        <div className="d-flex flex-row-reverse text-muted justify-content-between">
+          <div className="d-flex justify-content-between w-25">
+            <PostVote postId={id} />
+            <PostActions postId={id} />
+          </div>
+        </div>
         <hr />
         <FilteredCommentList />
       </div>

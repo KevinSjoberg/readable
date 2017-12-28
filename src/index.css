@@ -1,0 +1,9 @@
+.action {
+  color: #007bff;
+  cursor: pointer;
+  user-select: none;
+}
+
+.action:hover {
+  color: #0056b3;
+}

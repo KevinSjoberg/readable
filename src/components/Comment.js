@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from 'reactstrap';
 
+import CommentActions from './CommentActions';
 import CommentVote from './CommentVote';
 
 const Comment = ({
@@ -22,9 +23,10 @@ const Comment = ({
       <CardTitle>Written by{author} {moment(timestamp).fromNow()}</CardTitle>
       <CardText>{body}</CardText>
     </CardBody>
-    <CardFooter className="text-muted">
-      <div className="float-right">
+    <CardFooter className="d-flex flex-row-reverse justify-content-between text-muted">
+      <div className="d-flex justify-content-between w-25">
         <CommentVote commentId={id} />
+        <CommentActions commentId={id} />
       </div>
     </CardFooter>
   </Card>

@@ -90,3 +90,16 @@ export const fetchComments = postId => (dispatch) => {
     .then(comments => dispatch({ type: FETCH_COMMENTS_SUCCESS, comments }))
     .catch(error => dispatch({ type: FETCH_COMMENTS_FAILURE, error }));
 };
+
+export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
+export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS';
+export const REMOVE_COMMENT_FAILURE = 'REMOVE_COMMENT_FAILURE';
+export const removeComment = id => (dispatch) => {
+  dispatch({ type: REMOVE_COMMENT_REQUEST });
+
+  API
+    .removeComment(id)
+    .then(response => response.json())
+    .then(comment => dispatch({ type: REMOVE_COMMENT_SUCCESS, comment }))
+    .catch(error => dispatch({ type: REMOVE_COMMENT_FAILURE, error }));
+};

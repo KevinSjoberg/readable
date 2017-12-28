@@ -15,6 +15,8 @@ import {
   FETCH_POSTS_FAILURE,
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
+  REMOVE_COMMENT_FAILURE,
+  REMOVE_COMMENT_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_SUCCESS,
   UPVOTE_ENTITY_FAILURE,
@@ -205,6 +207,16 @@ const comments = (state = initialCommentsState, action) => {
         ...state,
         error: action.error,
         isVoting: false,
+      };
+    case REMOVE_COMMENT_SUCCESS:
+      return {
+        ...state,
+        comments: state.comments.filter(comment => comment.id !== action.comment.id),
+      };
+    case REMOVE_COMMENT_FAILURE:
+      return {
+        ...state,
+        error: action.error,
       };
     default:
       return state;
