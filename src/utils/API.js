@@ -8,40 +8,53 @@ const buildHeaders = (extras = {}) => {
   return headers;
 };
 
-const get = path =>
+const doGet = path =>
   fetch(`${HOST}/${path}`, {
     headers: buildHeaders(),
   });
 
-const post = (path, params) =>
+const doPost = (path, params) =>
   fetch(`${HOST}/${path}`, {
     body: JSON.stringify(params),
     headers: buildHeaders({
-      'Accept': 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
     }),
     method: 'POST',
   });
 
+const doDelete = path =>
+  fetch(`${HOST}/${path}`, {
+    headers: buildHeaders(),
+    method: 'DELETE',
+  });
+
 export default {
   fetchCategories: () => {
     const path = 'categories';
-    return get(path);
+    return doGet(path);
   },
   fetchPost: (id) => {
     const path = `posts/${id}`;
-    return get(path);
+    return doGet(path);
   },
   fetchPosts: (category) => {
     const path = category ? `${category}/posts` : 'posts';
-    return get(path);
+    return doGet(path);
   },
   upvote: (entity, id) => {
     const path = `${entity}s/${id}`;
-    return post(path, { option: 'upVote' });
+    return doPost(path, { option: 'upVote' });
   },
   downvote: (entity, id) => {
     const path = `${entity}s/${id}`;
-    return post(path, { option: 'downVote' });
+    return doPost(path, { option: 'downVote' });
+  },
+  removePost: (id) => {
+    const path = `posts/${id}`;
+    return doDelete(path);
+  },
+  fetchComments: (postId) => {
+    const path = `posts/${postId}/comments`;
+    return doGet(path);
   },
 };

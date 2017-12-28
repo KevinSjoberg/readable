@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { fetchPost, upvote, downvote } from '../actions';
 import { getPostbyId } from '../reducers';
 import Vote from './Vote';
+import FilteredCommentList from './FilteredCommentList';
 
 class PostDetail extends Component {
   componentDidMount() {
@@ -43,6 +44,8 @@ class PostDetail extends Component {
           onUpvoteClick={() => doUpvote('post', id)}
           onDownvoteClick={() => doDownvote('post', id)}
         />
+        <hr />
+        <FilteredCommentList />
       </div>
     );
   }
@@ -67,7 +70,6 @@ PostDetail.propTypes = {
     author: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     voteScore: PropTypes.number.isRequired,
-    deleted: PropTypes.bool.isRequired,
     commentCount: PropTypes.number.isRequired,
   }),
   upvote: PropTypes.func.isRequired,

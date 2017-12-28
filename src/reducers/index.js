@@ -1,20 +1,25 @@
 import { combineReducers } from 'redux';
 import {
-  FETCH_CATEGORIES_REQUEST,
-  FETCH_CATEGORIES_SUCCESS,
-  FETCH_CATEGORIES_FAILURE,
-  FETCH_POST_REQUEST,
-  FETCH_POST_SUCCESS,
-  FETCH_POST_FAILURE,
-  FETCH_POSTS_REQUEST,
-  FETCH_POSTS_SUCCESS,
-  FETCH_POSTS_FAILURE,
-  UPVOTE_ENTITY_REQUEST,
-  UPVOTE_ENTITY_SUCCESS,
-  UPVOTE_ENTITY_FAILURE,
+  DOWNVOTE_ENTITY_FAILURE,
   DOWNVOTE_ENTITY_REQUEST,
   DOWNVOTE_ENTITY_SUCCESS,
-  DOWNVOTE_ENTITY_FAILURE,
+  FETCH_CATEGORIES_FAILURE,
+  FETCH_CATEGORIES_REQUEST,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_COMMENTS_FAILURE,
+  FETCH_COMMENTS_REQUEST,
+  FETCH_COMMENTS_SUCCESS,
+  FETCH_POST_FAILURE,
+  FETCH_POST_REQUEST,
+  FETCH_POST_SUCCESS,
+  FETCH_POSTS_FAILURE,
+  FETCH_POSTS_REQUEST,
+  FETCH_POSTS_SUCCESS,
+  REMOVE_POST_FAILURE,
+  REMOVE_POST_SUCCESS,
+  UPVOTE_ENTITY_FAILURE,
+  UPVOTE_ENTITY_REQUEST,
+  UPVOTE_ENTITY_SUCCESS,
 } from '../actions';
 
 const initialCategoriesState = {
@@ -87,16 +92,24 @@ const posts = (state = initialPostsState, action) => {
       };
     case UPVOTE_ENTITY_REQUEST:
     case DOWNVOTE_ENTITY_REQUEST:
+      if (action.entityName !== 'post') {
+        return state;
+      }
+
       return {
         ...state,
         isVoting: true,
       };
     case UPVOTE_ENTITY_SUCCESS:
     case DOWNVOTE_ENTITY_SUCCESS: {
-      const index = state.posts.findIndex(post => post.id === action.post.id);
+      if (action.entityName !== 'post') {
+        return state;
+      }
+
+      const index = state.posts.findIndex(post => post.id === action.entity.id);
       const newPosts = index === -1
         ? state.posts
-        : Object.assign([], state.posts, { [index]: action.post });
+        : Object.assign([], state.posts, { [index]: action.entity });
 
       return {
         ...state,
@@ -106,6 +119,88 @@ const posts = (state = initialPostsState, action) => {
     }
     case UPVOTE_ENTITY_FAILURE:
     case DOWNVOTE_ENTITY_FAILURE:
+      if (action.entityName !== 'post') {
+        return state;
+      }
+
+      return {
+        ...state,
+        error: action.error,
+        isVoting: false,
+      };
+    case REMOVE_POST_SUCCESS:
+      return {
+        ...state,
+        posts: state.posts.filter(post => post.id !== action.post.id),
+      };
+    case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialCommentsState = {
+  comments: [],
+  isFetching: false,
+  isVoting: false,
+};
+
+const comments = (state = initialCommentsState, action) => {
+  switch (action.type) {
+    case FETCH_COMMENTS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case FETCH_COMMENTS_SUCCESS:
+      return {
+        ...state,
+        comments: action.comments,
+        isFetching: false,
+      };
+    case FETCH_COMMENTS_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+        isFetching: false,
+      };
+    case UPVOTE_ENTITY_REQUEST:
+    case DOWNVOTE_ENTITY_REQUEST:
+      if (action.entityName !== 'comment') {
+        return state;
+      }
+
+      return {
+        ...state,
+        isVoting: true,
+      };
+    case UPVOTE_ENTITY_SUCCESS:
+    case DOWNVOTE_ENTITY_SUCCESS: {
+      if (action.entityName !== 'comment') {
+        return state;
+      }
+
+      const index = state.comments.findIndex(comment => comment.id === action.entity.id);
+      const newComments = index === -1
+        ? state.comments
+        : Object.assign([], state.comments, { [index]: action.entity });
+
+      return {
+        ...state,
+        comments: newComments,
+        isVoting: false,
+      };
+    }
+    case UPVOTE_ENTITY_FAILURE:
+    case DOWNVOTE_ENTITY_FAILURE:
+      if (action.entityName !== 'comment') {
+        return state;
+      }
+
       return {
         ...state,
         error: action.error,
@@ -120,5 +215,6 @@ export const getPostbyId = (state, id) => state.posts.find(post => post.id === i
 
 export default combineReducers({
   categories,
+  comments,
   posts,
 });

@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown } from '@fortawesome/fontawesome-free-solid';
+import { faArrowUp, faArrowDown } from '@fortawesome/fontawesome-free-solid';
 
 const Vote = ({ score, onUpvoteClick, onDownvoteClick }) => (
   <div>
-    <FontAwesomeIcon icon={faThumbsUp} onClick={onUpvoteClick} />
+    <FontAwesomeIcon icon={faArrowUp} onClick={onUpvoteClick} />
     <span className="px-2">{score}</span>
-    <FontAwesomeIcon icon={faThumbsDown} onClick={onDownvoteClick} />
+    <FontAwesomeIcon icon={faArrowDown} onClick={onDownvoteClick} />
   </div>
 );
 
