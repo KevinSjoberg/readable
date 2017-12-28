@@ -211,7 +211,11 @@ const comments = (state = initialCommentsState, action) => {
   }
 };
 
-export const getPostbyId = (state, id) => state.posts.find(post => post.id === id);
+export const getCommentById = (state, id) =>
+  state.comments.comments.find(comment => comment.id === id);
+
+export const getPostById = (state, id) =>
+  state.posts.posts.find(post => post.id === id);
 
 export default combineReducers({
   categories,

@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { fetchPost, upvote, downvote } from '../actions';
-import { getPostbyId } from '../reducers';
-import Vote from './Vote';
+import { fetchPost } from '../actions';
+import { getPostById } from '../reducers';
+import PostVote from './PostVote';
 import FilteredCommentList from './FilteredCommentList';
 
 class PostDetail extends Component {
@@ -21,8 +21,6 @@ class PostDetail extends Component {
     }
 
     const {
-      upvote: doUpvote,
-      downvote: doDownvote,
       post: {
         author,
         body,
@@ -30,7 +28,6 @@ class PostDetail extends Component {
         id,
         timestamp,
         title,
-        voteScore,
       },
     } = this.props;
 
@@ -39,11 +36,7 @@ class PostDetail extends Component {
         <h1>{title}</h1>
         <p className="text-muted">Written by{author} in {category} {moment(timestamp).fromNow()}</p>
         <p>{body}</p>
-        <Vote
-          score={voteScore}
-          onUpvoteClick={() => doUpvote('post', id)}
-          onDownvoteClick={() => doDownvote('post', id)}
-        />
+        <PostVote postId={id} />
         <hr />
         <FilteredCommentList />
       </div>
@@ -69,18 +62,15 @@ PostDetail.propTypes = {
     body: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-    voteScore: PropTypes.number.isRequired,
     commentCount: PropTypes.number.isRequired,
   }),
-  upvote: PropTypes.func.isRequired,
-  downvote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  post: getPostbyId(state.posts, ownProps.match.params.id),
+  post: getPostById(state, ownProps.match.params.id),
 });
 
 export default withRouter(connect(
   mapStateToProps,
-  { fetchPost, upvote, downvote },
+  { fetchPost },
 )(PostDetail));

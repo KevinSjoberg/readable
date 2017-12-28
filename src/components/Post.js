@@ -12,8 +12,8 @@ import {
   CardTitle,
 } from 'reactstrap';
 
-import Vote from './Vote';
-import { upvote, downvote, removePost } from '../actions';
+import { removePost } from '../actions';
+import PostVote from './PostVote';
 
 const Post = ({
   id,
@@ -22,10 +22,7 @@ const Post = ({
   body,
   author,
   category,
-  voteScore,
   commentCount,
-  upvote: doUpvote,
-  downvote: doDownvote,
   removePost: doRemovePost,
 }) => (
   <Card className="mb-3">
@@ -43,11 +40,7 @@ const Post = ({
         <span>{commentCount} comments</span>
       </div>
       <div className="float-right">
-        <Vote
-          score={voteScore}
-          onUpvoteClick={() => doUpvote('post', id)}
-          onDownvoteClick={() => doDownvote('post', id)}
-        />
+        <PostVote postId={id} />
         <button onClick={() => doRemovePost(id)}>Remove</button>
       </div>
     </CardFooter>
@@ -59,13 +52,10 @@ Post.propTypes = {
   body: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   commentCount: PropTypes.number.isRequired,
-  downvote: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   timestamp: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  upvote: PropTypes.func.isRequired,
-  voteScore: PropTypes.number.isRequired,
   removePost: PropTypes.func.isRequired,
 };
 
-export default connect(null, { upvote, downvote, removePost })(Post);
+export default connect(null, { removePost })(Post);
