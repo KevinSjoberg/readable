@@ -4,38 +4,36 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { removePost } from '../actions';
-import { getPost } from '../reducers';
 import Actions from './Actions';
 
 const PostActions = ({
-  editPath,
   handleRemove,
+  post: { category, id },
 }) => (
   <Actions
-    onEditClickPath={editPath}
+    onEditClickPath={`/${category}/${id}/edit`}
     onRemoveClick={handleRemove}
   />
 );
 
 PostActions.propTypes = {
-  editPath: PropTypes.string.isRequired,
   handleRemove: PropTypes.func.isRequired,
-  postId: PropTypes.string.isRequired,
+  post: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-const mapStateToProps = (state, { postId }) => {
-  const post = getPost(state, postId);
-
-  return {
-    editPath: `/${post.category}/${postId}/edit`,
-  };
-};
-
-const mapDispatchToProps = (dispatch, { postId }) => ({
-  handleRemove: () => dispatch(removePost(postId)),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  handleRemove: () => {
+    const { match: { params: { category } }, post: { id } } = ownProps;
+    const redirectTo = category ? `/${category}` : '/';
+    dispatch(removePost(id))
+      .then(() => ownProps.history.push(redirectTo));
+  },
 });
 
 export default withRouter(connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(PostActions));

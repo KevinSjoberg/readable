@@ -23,7 +23,7 @@ import {
   UPVOTE_ENTITY_REQUEST,
   UPVOTE_ENTITY_SUCCESS,
 } from '../actions';
-
+import { omit } from '../utils/helpers';
 
 const allIds = (state = [], action) => {
   switch (action.type) {
@@ -63,13 +63,7 @@ const byId = (state = {}, action) => {
       return { ...state, [action.entity.id]: action.entity };
     }
     case REMOVE_POST_SUCCESS:
-      return Object.keys(state).reduce((nextState, id) => {
-        if (id === action.post.id) {
-          return nextState;
-        }
-
-        return { ...nextState, [id]: state[id] };
-      }, {});
+      return omit(state, action.post.id);
     default:
       return state;
   }

@@ -14,10 +14,12 @@ import CommentActions from './CommentActions';
 import CommentVote from './CommentVote';
 
 const Comment = ({
-  id,
-  timestamp,
-  body,
   author,
+  body,
+  id,
+  parentId,
+  timestamp,
+  voteScore,
 }) => (
   <Card className="mb-3">
     <CardBody>
@@ -27,8 +29,8 @@ const Comment = ({
     </CardBody>
     <CardFooter className="d-flex flex-row-reverse justify-content-between text-muted">
       <div className="d-flex justify-content-between w-25">
-        <CommentVote commentId={id} />
-        <CommentActions commentId={id} />
+        <CommentVote comment={{ id, voteScore }} />
+        <CommentActions comment={{ id, parentId }} />
       </div>
     </CardFooter>
   </Card>
@@ -38,7 +40,9 @@ Comment.propTypes = {
   author: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  parentId: PropTypes.string.isRequired,
   timestamp: PropTypes.number.isRequired,
+  voteScore: PropTypes.number.isRequired,
 };
 
 export default Comment;

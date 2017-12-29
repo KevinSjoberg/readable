@@ -3,32 +3,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { upvote, downvote } from '../actions';
-import { getComment } from '../reducers';
 import Vote from './Vote';
 
 const CommentVote = ({
+  comment,
   handleDownvote,
   handleUpvote,
-  commentId,
-  score,
 }) => (
   <Vote
-    score={score}
-    onUpvoteClick={() => handleUpvote(commentId)}
-    onDownvoteClick={() => handleDownvote(commentId)}
+    score={comment.voteScore}
+    onUpvoteClick={() => handleUpvote(comment.id)}
+    onDownvoteClick={() => handleDownvote(comment.id)}
   />
 );
 
 CommentVote.propTypes = {
-  commentId: PropTypes.string.isRequired,
+  comment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    voteScore: PropTypes.number.isRequired,
+  }).isRequired,
   handleDownvote: PropTypes.func.isRequired,
   handleUpvote: PropTypes.func.isRequired,
-  score: PropTypes.number.isRequired,
 };
-
-const mapStateToProps = (state, ownProps) => ({
-  score: getComment(state, ownProps.commentId).voteScore,
-});
 
 const mapDispatchToProps = dispatch => ({
   handleDownvote: commentId => dispatch(downvote('comment', commentId)),
@@ -36,6 +32,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(CommentVote);

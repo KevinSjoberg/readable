@@ -4,39 +4,37 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { removeComment } from '../actions';
-import { getPost, getComment } from '../reducers';
 import Actions from './Actions';
 
 const CommentActions = ({
-  editPath,
+  comment: { parentId, id },
   handleRemove,
+  match: { params: { category } },
 }) => (
   <Actions
-    onEditClickPath={editPath}
+    onEditClickPath={`/${category}/${parentId}/comments/${id}/edit`}
     onRemoveClick={handleRemove}
   />
 );
 
 CommentActions.propTypes = {
-  editPath: PropTypes.string.isRequired,
+  comment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    parentId: PropTypes.string.isRequired,
+  }).isRequired,
   handleRemove: PropTypes.func.isRequired,
-  commentId: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      category: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
-const mapStateToProps = (state, { commentId }) => {
-  const { parentId } = getComment(state, commentId);
-  const post = getPost(state, parentId);
-
-  return {
-    editPath: `/${post.category}/${parentId}/comments/${commentId}/edit`,
-  };
-};
-
-const mapDispatchToProps = (dispatch, { commentId }) => ({
-  handleRemove: () => dispatch(removeComment(commentId)),
+const mapDispatchToProps = (dispatch, { comment: { id } }) => ({
+  handleRemove: () => dispatch(removeComment(id)),
 });
 
 export default withRouter(connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(CommentActions));
