@@ -1,5 +1,5 @@
 import API from '../utils/api';
-import { getCommentById, getPostById } from '../reducers';
+import { getComment, getPost } from '../reducers';
 
 export const FETCH_CATEGORIES_REQUEST = 'FETCH_CATEGORIES_REQUEST';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
@@ -11,7 +11,7 @@ export const fetchCategories = () => (dispatch) => {
     .fetchCategories()
     .then(response => response.json())
     .then(json => dispatch({ type: FETCH_CATEGORIES_SUCCESS, categories: json.categories }))
-    .catch(error => dispatch({ type: FETCH_CATEGORIES_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: FETCH_CATEGORIES_FAILURE, errorMessage }));
 };
 
 export const FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST';
@@ -24,14 +24,14 @@ export const fetchPosts = category => (dispatch) => {
     .fetchPosts(category)
     .then(response => response.json())
     .then(posts => dispatch({ type: FETCH_POSTS_SUCCESS, posts }))
-    .catch(error => dispatch({ type: FETCH_POSTS_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: FETCH_POSTS_FAILURE, errorMessage }));
 };
 
 export const FETCH_POST_REQUEST = 'FETCH_POST_REQUEST';
 export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS';
 export const FETCH_POST_FAILURE = 'FETCH_POST_FAILURE';
 export const fetchPost = id => (dispatch, getState) => {
-  if (getPostById(getState(), id)) {
+  if (getPost(getState(), id)) {
     return Promise.resolve();
   }
 
@@ -41,7 +41,7 @@ export const fetchPost = id => (dispatch, getState) => {
     .fetchPost(id)
     .then(response => response.json())
     .then(post => dispatch({ type: FETCH_POST_SUCCESS, post }))
-    .catch(error => dispatch({ type: FETCH_POST_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: FETCH_POST_FAILURE, errorMessage }));
 };
 
 export const UPVOTE_ENTITY_REQUEST = 'UPVOTE_ENTITY_REQUEST';
@@ -54,7 +54,7 @@ export const upvote = (entityName, id) => (dispatch) => {
     .upvote(entityName, id)
     .then(response => response.json())
     .then(entity => dispatch({ type: UPVOTE_ENTITY_SUCCESS, entity, entityName }))
-    .catch(error => dispatch({ type: UPVOTE_ENTITY_FAILURE, error, entityName }));
+    .catch(errorMessage => dispatch({ type: UPVOTE_ENTITY_FAILURE, errorMessage, entityName }));
 };
 
 export const DOWNVOTE_ENTITY_REQUEST = 'DOWNVOTE_ENTITY_REQUEST';
@@ -67,7 +67,7 @@ export const downvote = (entityName, id) => (dispatch) => {
     .downvote(entityName, id)
     .then(response => response.json())
     .then(entity => dispatch({ type: DOWNVOTE_ENTITY_SUCCESS, entity, entityName }))
-    .catch(error => dispatch({ type: DOWNVOTE_ENTITY_FAILURE, error, entityName }));
+    .catch(errorMessage => dispatch({ type: DOWNVOTE_ENTITY_FAILURE, errorMessage, entityName }));
 };
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
@@ -80,7 +80,7 @@ export const removePost = id => (dispatch) => {
     .removePost(id)
     .then(response => response.json())
     .then(post => dispatch({ type: REMOVE_POST_SUCCESS, post }))
-    .catch(error => dispatch({ type: REMOVE_POST_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: REMOVE_POST_FAILURE, errorMessage }));
 };
 
 export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST';
@@ -93,14 +93,14 @@ export const fetchComments = postId => (dispatch) => {
     .fetchComments(postId)
     .then(response => response.json())
     .then(comments => dispatch({ type: FETCH_COMMENTS_SUCCESS, comments }))
-    .catch(error => dispatch({ type: FETCH_COMMENTS_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: FETCH_COMMENTS_FAILURE, errorMessage }));
 };
 
 export const FETCH_COMMENT_REQUEST = 'FETCH_COMMENT_REQUEST';
 export const FETCH_COMMENT_SUCCESS = 'FETCH_COMMENT_SUCCESS';
 export const FETCH_COMMENT_FAILURE = 'FETCH_COMMENT_FAILURE';
 export const fetchComment = id => (dispatch, getState) => {
-  if (getCommentById(getState(), id)) {
+  if (getComment(getState(), id)) {
     return Promise.resolve();
   }
 
@@ -110,7 +110,7 @@ export const fetchComment = id => (dispatch, getState) => {
     .fetchComment(id)
     .then(response => response.json())
     .then(comment => dispatch({ type: FETCH_COMMENT_SUCCESS, comment }))
-    .catch(error => dispatch({ type: FETCH_COMMENT_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: FETCH_COMMENT_FAILURE, errorMessage }));
 };
 
 export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
@@ -123,7 +123,7 @@ export const removeComment = id => (dispatch) => {
     .removeComment(id)
     .then(response => response.json())
     .then(comment => dispatch({ type: REMOVE_COMMENT_SUCCESS, comment }))
-    .catch(error => dispatch({ type: REMOVE_COMMENT_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: REMOVE_COMMENT_FAILURE, errorMessage }));
 };
 
 export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
@@ -136,7 +136,7 @@ export const updatePost = (id, params) => (dispatch) => {
     .updatePost(id, params)
     .then(response => response.json())
     .then(post => dispatch({ type: UPDATE_POST_SUCCESS, post }))
-    .catch(error => dispatch({ type: UPDATE_POST_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: UPDATE_POST_FAILURE, errorMessage }));
 };
 
 export const UPDATE_COMMENT_REQUEST = 'UPDATE_COMMENT_REQUEST';
@@ -149,7 +149,7 @@ export const updateComment = (id, params) => (dispatch) => {
     .updateComment(id, params)
     .then(response => response.json())
     .then(comment => dispatch({ type: UPDATE_COMMENT_SUCCESS, comment }))
-    .catch(error => dispatch({ type: UPDATE_COMMENT_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: UPDATE_COMMENT_FAILURE, errorMessage }));
 };
 
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
@@ -162,7 +162,7 @@ export const addComment = params => (dispatch) => {
     .addComment(params)
     .then(response => response.json())
     .then(comment => dispatch({ type: ADD_COMMENT_SUCCESS, comment }))
-    .catch(error => dispatch({ type: ADD_COMMENT_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: ADD_COMMENT_FAILURE, errorMessage }));
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -175,5 +175,5 @@ export const addPost = params => (dispatch) => {
     .addPost(params)
     .then(response => response.json())
     .then(post => dispatch({ type: ADD_POST_SUCCESS, post }))
-    .catch(error => dispatch({ type: ADD_POST_FAILURE, error }));
+    .catch(errorMessage => dispatch({ type: ADD_POST_FAILURE, errorMessage }));
 };

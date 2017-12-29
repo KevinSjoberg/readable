@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ListGroup } from 'reactstrap';
 
 import { fetchCategories } from '../actions';
+import { getCategories } from '../reducers';
 import Category from './Category';
 
 class CategoryList extends Component {
@@ -38,7 +39,7 @@ CategoryList.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  categories: state.categories.categories,
+  categories: getCategories(state),
   currentCategory: ownProps.match.params.category,
 });
 

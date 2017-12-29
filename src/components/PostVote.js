@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { upvote, downvote } from '../actions';
-import { getPostById } from '../reducers';
+import { getPost } from '../reducers';
 import Vote from './Vote';
 
 const PostVote = ({
@@ -27,7 +27,7 @@ PostVote.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  score: getPostById(state, ownProps.postId).voteScore,
+  score: getPost(state, ownProps.postId).voteScore,
 });
 
 const mapDispatchToProps = dispatch => ({

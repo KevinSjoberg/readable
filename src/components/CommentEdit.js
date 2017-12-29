@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchComment, updateComment } from '../actions';
-import { getCommentById } from '../reducers';
+import { getComment } from '../reducers';
 import CommentValidatingForm from './CommentValidatingForm';
 
 class CommentEdit extends Component {
@@ -67,7 +67,7 @@ CommentEdit.propTypes = {
 };
 
 const mapStateToProps = (state, { match: { params: { id } } }) => ({
-  comment: getCommentById(state, id),
+  comment: getComment(state, id),
 });
 
 export default connect(

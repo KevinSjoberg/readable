@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { removeComment } from '../actions';
-import { getPostById, getCommentById } from '../reducers';
+import { getPost, getComment } from '../reducers';
 import Actions from './Actions';
 
 const CommentActions = ({
@@ -24,8 +24,8 @@ CommentActions.propTypes = {
 };
 
 const mapStateToProps = (state, { commentId }) => {
-  const { parentId } = getCommentById(state, commentId);
-  const post = getPostById(state, parentId);
+  const { parentId } = getComment(state, commentId);
+  const post = getPost(state, parentId);
 
   return {
     editPath: `/${post.category}/${parentId}/comments/${commentId}/edit`,

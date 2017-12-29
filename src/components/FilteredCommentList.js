@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
-import { fetchComments } from '../actions';
 import CommentList from './CommentList';
+import { fetchComments } from '../actions';
+import { getComments } from '../reducers';
 
 class FilteredCommentList extends Component {
   componentDidMount() {
@@ -38,7 +39,7 @@ FilteredCommentList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  comments: state.comments.comments,
+  comments: getComments(state),
 });
 
 export default withRouter(connect(

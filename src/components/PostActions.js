@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { removePost } from '../actions';
-import { getPostById } from '../reducers';
+import { getPost } from '../reducers';
 import Actions from './Actions';
 
 const PostActions = ({
@@ -24,7 +24,7 @@ PostActions.propTypes = {
 };
 
 const mapStateToProps = (state, { postId }) => {
-  const post = getPostById(state, postId);
+  const post = getPost(state, postId);
 
   return {
     editPath: `/${post.category}/${postId}/edit`,

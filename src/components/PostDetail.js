@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { fetchPost } from '../actions';
-import { getPostById } from '../reducers';
+import { getPost } from '../reducers';
 import FilteredCommentList from './FilteredCommentList';
 import PostActions from './PostActions';
 import PostVote from './PostVote';
@@ -73,7 +73,7 @@ PostDetail.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  post: getPostById(state, ownProps.match.params.id),
+  post: getPost(state, ownProps.match.params.id),
 });
 
 export default withRouter(connect(

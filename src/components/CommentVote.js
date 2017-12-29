@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { upvote, downvote } from '../actions';
-import { getCommentById } from '../reducers';
+import { getComment } from '../reducers';
 import Vote from './Vote';
 
 const CommentVote = ({
@@ -27,7 +27,7 @@ CommentVote.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  score: getCommentById(state, ownProps.commentId).voteScore,
+  score: getComment(state, ownProps.commentId).voteScore,
 });
 
 const mapDispatchToProps = dispatch => ({

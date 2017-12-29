@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 import { fetchPosts } from '../actions';
+import { getPosts } from '../reducers';
 import PostList from './PostList';
 
 class FilteredPostList extends Component {
@@ -39,7 +40,7 @@ FilteredPostList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  posts: state.posts.posts,
+  posts: getPosts(state),
 });
 
 export default withRouter(connect(

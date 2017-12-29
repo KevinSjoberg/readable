@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchPost, updatePost } from '../actions';
-import { getPostById } from '../reducers';
+import { getPost } from '../reducers';
 import PostValidatingForm from './PostValidatingForm';
 
 class PostEdit extends Component {
@@ -68,7 +68,7 @@ PostEdit.propTypes = {
 };
 
 const mapStateToProps = (state, { match: { params: { id } } }) => ({
-  post: getPostById(state, id),
+  post: getPost(state, id),
 });
 
 export default connect(
