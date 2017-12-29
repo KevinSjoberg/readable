@@ -1,4 +1,4 @@
-export const anyOf = candidates => (field, name, value) => (
+export const anyOf = (...candidates) => (field, name, value) => (
   !candidates.some(candidate => candidate === value) ? `must be one of ${candidates.join(', ')}` : ''
 );
 

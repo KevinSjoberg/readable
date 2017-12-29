@@ -245,9 +245,6 @@ const comments = (state = initialCommentsState, action) => {
 export const getCommentById = (state, id) =>
   state.comments.comments.find(comment => comment.id === id);
 
-export const getIsFetchingPosts = state =>
-  state.posts.isFetching;
-
 export const getPostById = (state, id) =>
   state.posts.posts.find(post => post.id === id);
 
