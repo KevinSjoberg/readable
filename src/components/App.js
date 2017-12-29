@@ -20,7 +20,7 @@ const App = () => (
       </Row>
       <Row>
         <Col xs="4">
-          <CategoryList />
+          <Route path="/:category?" component={CategoryList} />
         </Col>
         <Col xs="8">
           <Switch>

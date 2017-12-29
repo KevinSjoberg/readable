@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { ListGroup } from 'reactstrap';
-import Category from './Category';
+
 import { fetchCategories } from '../actions';
+import Category from './Category';
 
 class CategoryList extends Component {
   componentDidMount() {
@@ -11,11 +12,11 @@ class CategoryList extends Component {
   }
 
   render() {
-    const { categories } = this.props;
+    const { categories, currentCategory } = this.props;
     return (
       <ListGroup>
         {categories.map(category => (
-          <Category key={category.path} {...category} />
+          <Category key={category.path} active={category.name === currentCategory} {...category} />
         ))}
       </ListGroup>
     );
@@ -24,15 +25,21 @@ class CategoryList extends Component {
 
 CategoryList.defaultProps = {
   categories: [],
+  currentCategory: '',
 };
 
 CategoryList.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.shape(Category.propTypes)),
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+  })),
+  currentCategory: PropTypes.string,
   fetchCategories: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   categories: state.categories.categories,
+  currentCategory: ownProps.match.params.category,
 });
 
 export default connect(
