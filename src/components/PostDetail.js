@@ -26,7 +26,6 @@ class PostDetail extends Component {
         author,
         body,
         category,
-        id,
         timestamp,
         title,
       },
