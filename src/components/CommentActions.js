@@ -28,7 +28,7 @@ const mapStateToProps = (state, { commentId }) => {
   const post = getPostById(state, parentId);
 
   return {
-    editPath: `/posts/${post.category}/${parentId}/${commentId}/edit`,
+    editPath: `/${post.category}/${parentId}/comments/${commentId}/edit`,
   };
 };
 

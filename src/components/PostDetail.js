@@ -35,7 +35,7 @@ class PostDetail extends Component {
     return (
       <div>
         <h1>{title}</h1>
-        <p className="text-muted">Written by{author} in {category} {moment(timestamp).fromNow()}</p>
+        <p className="text-muted">Written by {author} in {category} {moment(timestamp).fromNow()}</p>
         <p>{body}</p>
         <div className="d-flex flex-row-reverse text-muted justify-content-between">
           <div className="d-flex justify-content-between w-25">

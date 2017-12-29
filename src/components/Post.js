@@ -29,7 +29,7 @@ const Post = ({
         <Link to={`${category}/${id}`}>{title}</Link>
       </CardTitle>
       <CardSubtitle className="mb-3 text-muted">
-        Written by{author} in {category} {moment(timestamp).fromNow()}
+        Written by {author} in {category} {moment(timestamp).fromNow()}
       </CardSubtitle>
       <CardText>{body}</CardText>
     </CardBody>

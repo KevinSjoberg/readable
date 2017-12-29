@@ -20,7 +20,7 @@ const Comment = ({
 }) => (
   <Card className="mb-3">
     <CardBody>
-      <CardTitle>Written by{author} {moment(timestamp).fromNow()}</CardTitle>
+      <CardTitle>Written by {author} {moment(timestamp).fromNow()}</CardTitle>
       <CardText>{body}</CardText>
     </CardBody>
     <CardFooter className="d-flex flex-row-reverse justify-content-between text-muted">

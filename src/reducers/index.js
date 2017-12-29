@@ -19,6 +19,8 @@ import {
   REMOVE_COMMENT_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
+  UPDATE_POST_SUCCESS,
   UPVOTE_ENTITY_FAILURE,
   UPVOTE_ENTITY_REQUEST,
   UPVOTE_ENTITY_SUCCESS,
@@ -60,6 +62,9 @@ const initialPostsState = {
   posts: [],
 };
 
+
+const getPostIndexById = (state, id) => state.posts.findIndex(post => post.id === id);
+
 const posts = (state = initialPostsState, action) => {
   switch (action.type) {
     case FETCH_POST_REQUEST:
@@ -69,7 +74,7 @@ const posts = (state = initialPostsState, action) => {
         isFetching: true,
       };
     case FETCH_POST_SUCCESS: {
-      const index = state.posts.findIndex(post => post.id === action.post.id);
+      const index = getPostIndexById(state, action.post.id);
       const newPosts = index === -1
         ? [...state.posts, action.post]
         : Object.assign([], state.posts, { [index]: action.post });
@@ -77,6 +82,7 @@ const posts = (state = initialPostsState, action) => {
       return {
         ...state,
         posts: newPosts,
+        isFetching: false,
       };
     }
     case FETCH_POSTS_SUCCESS:
@@ -108,7 +114,7 @@ const posts = (state = initialPostsState, action) => {
         return state;
       }
 
-      const index = state.posts.findIndex(post => post.id === action.entity.id);
+      const index = getPostIndexById(state, action.entity.id);
       const newPosts = index === -1
         ? state.posts
         : Object.assign([], state.posts, { [index]: action.entity });
@@ -136,6 +142,19 @@ const posts = (state = initialPostsState, action) => {
         posts: state.posts.filter(post => post.id !== action.post.id),
       };
     case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
+    case UPDATE_POST_SUCCESS: {
+      const index = getPostIndexById(state, action.post.id);
+
+      return {
+        ...state,
+        posts: Object.assign([], state.posts, { [index]: action.post }),
+      };
+    }
+    case UPDATE_POST_FAILURE:
       return {
         ...state,
         error: action.error,
@@ -225,6 +244,9 @@ const comments = (state = initialCommentsState, action) => {
 
 export const getCommentById = (state, id) =>
   state.comments.comments.find(comment => comment.id === id);
+
+export const getIsFetchingPosts = state =>
+  state.posts.isFetching;
 
 export const getPostById = (state, id) =>
   state.posts.posts.find(post => post.id === id);

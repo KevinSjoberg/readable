@@ -28,6 +28,15 @@ const doDelete = path =>
     method: 'DELETE',
   });
 
+const doPut = (path, params) =>
+  fetch(`${HOST}/${path}`, {
+    body: JSON.stringify(params),
+    headers: buildHeaders({
+      'Content-Type': 'application/json',
+    }),
+    method: 'PUT',
+  });
+
 export default {
   fetchCategories: () => {
     const path = 'categories';
@@ -60,5 +69,9 @@ export default {
   removeComment: (id) => {
     const path = `comments/${id}`;
     return doDelete(path);
-  }
+  },
+  updatePost: (id, params) => {
+    const path = `posts/${id}`;
+    return doPut(path, params);
+  },
 };
