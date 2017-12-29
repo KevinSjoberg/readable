@@ -9,7 +9,7 @@ import {
   Label,
 } from 'reactstrap';
 
-const PostForm = ({ fields, onInputChange, onSubmit }) => (
+const CommentForm = ({ fields, onInputChange, onSubmit }) => (
   <div>
     <Form onSubmit={onSubmit}>
       <FormGroup>
@@ -26,19 +26,6 @@ const PostForm = ({ fields, onInputChange, onSubmit }) => (
         <FormFeedback>{fields.author.error}</FormFeedback>
       </FormGroup>
       <FormGroup>
-        <Label for="title">Title</Label>
-        <Input
-          type="text"
-          name="title"
-          id="title"
-          placeholder="Enter a title"
-          valid={fields.title.valid}
-          value={fields.title.value}
-          onChange={onInputChange}
-        />
-        <FormFeedback>{fields.title.error}</FormFeedback>
-      </FormGroup>
-      <FormGroup>
         <Label for="body">What&apos;s on your mind?</Label>
         <Input
           type="textarea"
@@ -50,28 +37,12 @@ const PostForm = ({ fields, onInputChange, onSubmit }) => (
         />
         <FormFeedback>{fields.body.error}</FormFeedback>
       </FormGroup>
-      <FormGroup>
-        <Label for="category">Category</Label>
-        <Input
-          type="select"
-          name="category"
-          id="category"
-          valid={fields.category.valid}
-          value={fields.category.value}
-          onChange={onInputChange}
-        >
-          <option>react</option>
-          <option>redux</option>
-          <option>udacity</option>
-        </Input>
-        <FormFeedback>{fields.category.error}</FormFeedback>
-      </FormGroup>
       <Button>Submit</Button>
     </Form>
   </div>
 );
 
-PostForm.propTypes = {
+CommentForm.propTypes = {
   fields: PropTypes.objectOf(PropTypes.shape({
     error: PropTypes.string.isRequired,
     valid: PropTypes.bool.isRequired,
@@ -81,4 +52,4 @@ PostForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default PostForm;
+export default CommentForm;

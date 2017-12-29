@@ -1,11 +1,18 @@
 import { combineReducers } from 'redux';
 import {
+  ADD_COMMENT_FAILURE,
+  ADD_COMMENT_SUCCESS,
+  ADD_POST_FAILURE,
+  ADD_POST_SUCCESS,
   DOWNVOTE_ENTITY_FAILURE,
   DOWNVOTE_ENTITY_REQUEST,
   DOWNVOTE_ENTITY_SUCCESS,
   FETCH_CATEGORIES_FAILURE,
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_SUCCESS,
+  FETCH_COMMENT_FAILURE,
+  FETCH_COMMENT_REQUEST,
+  FETCH_COMMENT_SUCCESS,
   FETCH_COMMENTS_FAILURE,
   FETCH_COMMENTS_REQUEST,
   FETCH_COMMENTS_SUCCESS,
@@ -19,6 +26,8 @@ import {
   REMOVE_COMMENT_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_SUCCESS,
+  UPDATE_COMMENT_FAILURE,
+  UPDATE_COMMENT_SUCCESS,
   UPDATE_POST_FAILURE,
   UPDATE_POST_SUCCESS,
   UPVOTE_ENTITY_FAILURE,
@@ -63,10 +72,21 @@ const initialPostsState = {
 };
 
 
-const getPostIndexById = (state, id) => state.posts.findIndex(post => post.id === id);
+const getPostIndexById = (state, id) =>
+  state.posts.findIndex(post => post.id === id);
 
 const posts = (state = initialPostsState, action) => {
   switch (action.type) {
+    case ADD_POST_SUCCESS:
+      return {
+        ...state,
+        posts: [...state.posts, action.post],
+      };
+    case ADD_POST_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
     case FETCH_POST_REQUEST:
     case FETCH_POSTS_REQUEST:
       return {
@@ -170,19 +190,46 @@ const initialCommentsState = {
   isVoting: false,
 };
 
+const getCommentIndexById = (state, id) =>
+  state.comments.findIndex(comment => comment.id === id);
+
 const comments = (state = initialCommentsState, action) => {
   switch (action.type) {
+    case ADD_COMMENT_SUCCESS:
+      return {
+        ...state,
+        comments: [...state.comments, action.comment],
+      };
+    case ADD_COMMENT_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
+    case FETCH_COMMENT_REQUEST:
     case FETCH_COMMENTS_REQUEST:
       return {
         ...state,
         isFetching: true,
       };
+    case FETCH_COMMENT_SUCCESS: {
+      const index = getCommentIndexById(state, action.comment.id);
+      const newComments = index === -1
+        ? [...state.comments, action.comment]
+        : Object.assign([], state.comments, { [index]: action.comment });
+
+      return {
+        ...state,
+        comments: newComments,
+        isFetching: false,
+      };
+    }
     case FETCH_COMMENTS_SUCCESS:
       return {
         ...state,
         comments: action.comments,
         isFetching: false,
       };
+    case FETCH_COMMENT_FAILURE:
     case FETCH_COMMENTS_FAILURE:
       return {
         ...state,
@@ -233,6 +280,19 @@ const comments = (state = initialCommentsState, action) => {
         comments: state.comments.filter(comment => comment.id !== action.comment.id),
       };
     case REMOVE_COMMENT_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
+    case UPDATE_COMMENT_SUCCESS: {
+      const index = getCommentIndexById(state, action.comment.id);
+
+      return {
+        ...state,
+        comments: Object.assign([], state.comments, { [index]: action.comment }),
+      };
+    }
+    case UPDATE_COMMENT_FAILURE:
       return {
         ...state,
         error: action.error,

@@ -1,5 +1,5 @@
 import API from '../utils/api';
-import { getPostById } from '../reducers';
+import { getCommentById, getPostById } from '../reducers';
 
 export const FETCH_CATEGORIES_REQUEST = 'FETCH_CATEGORIES_REQUEST';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
@@ -96,6 +96,23 @@ export const fetchComments = postId => (dispatch) => {
     .catch(error => dispatch({ type: FETCH_COMMENTS_FAILURE, error }));
 };
 
+export const FETCH_COMMENT_REQUEST = 'FETCH_COMMENT_REQUEST';
+export const FETCH_COMMENT_SUCCESS = 'FETCH_COMMENT_SUCCESS';
+export const FETCH_COMMENT_FAILURE = 'FETCH_COMMENT_FAILURE';
+export const fetchComment = id => (dispatch, getState) => {
+  if (getCommentById(getState(), id)) {
+    return Promise.resolve();
+  }
+
+  dispatch({ type: FETCH_COMMENT_REQUEST, id });
+
+  return API
+    .fetchComment(id)
+    .then(response => response.json())
+    .then(comment => dispatch({ type: FETCH_COMMENT_SUCCESS, comment }))
+    .catch(error => dispatch({ type: FETCH_COMMENT_FAILURE, error }));
+};
+
 export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
 export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS';
 export const REMOVE_COMMENT_FAILURE = 'REMOVE_COMMENT_FAILURE';
@@ -120,4 +137,43 @@ export const updatePost = (id, params) => (dispatch) => {
     .then(response => response.json())
     .then(post => dispatch({ type: UPDATE_POST_SUCCESS, post }))
     .catch(error => dispatch({ type: UPDATE_POST_FAILURE, error }));
+};
+
+export const UPDATE_COMMENT_REQUEST = 'UPDATE_COMMENT_REQUEST';
+export const UPDATE_COMMENT_SUCCESS = 'UPDATE_COMMENT_SUCCESS';
+export const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE';
+export const updateComment = (id, params) => (dispatch) => {
+  dispatch({ type: UPDATE_COMMENT_REQUEST, id, params });
+
+  return API
+    .updateComment(id, params)
+    .then(response => response.json())
+    .then(comment => dispatch({ type: UPDATE_COMMENT_SUCCESS, comment }))
+    .catch(error => dispatch({ type: UPDATE_COMMENT_FAILURE, error }));
+};
+
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+export const addComment = params => (dispatch) => {
+  dispatch({ type: ADD_COMMENT_REQUEST, params });
+
+  return API
+    .addComment(params)
+    .then(response => response.json())
+    .then(comment => dispatch({ type: ADD_COMMENT_SUCCESS, comment }))
+    .catch(error => dispatch({ type: ADD_COMMENT_FAILURE, error }));
+};
+
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+export const addPost = params => (dispatch) => {
+  dispatch({ type: ADD_POST_REQUEST, params });
+
+  return API
+    .addPost(params)
+    .then(response => response.json())
+    .then(post => dispatch({ type: ADD_POST_SUCCESS, post }))
+    .catch(error => dispatch({ type: ADD_POST_FAILURE, error }));
 };

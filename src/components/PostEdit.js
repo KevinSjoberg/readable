@@ -19,12 +19,11 @@ class PostEdit extends Component {
   }
 
   handleSubmit(isValid, fields) {
-    const { updatePost: doUpdatePost, history, match: { params: { id } } } = this.props;
+    const { match: { params: { category, id } } } = this.props;
 
     if (isValid) {
-      doUpdatePost(id, fields).then(({ post: { category } }) => {
-        history.push(`/${category}/${id}`);
-      });
+      this.props.updatePost(id, fields)
+        .then(() => this.props.history.push(`/${category}/${id}`));
     }
   }
 
@@ -33,7 +32,12 @@ class PostEdit extends Component {
 
     return (
       post
-        ? <PostValidatingForm onSubmit={this.handleSubmit} {...post} />
+        ? (
+          <div>
+            <h1>Edit post</h1>
+            <PostValidatingForm onSubmit={this.handleSubmit} {...post} />
+          </div>
+        )
         : <h1>Loading...</h1>
     );
   }
@@ -45,8 +49,12 @@ PostEdit.defaultProps = {
 
 PostEdit.propTypes = {
   fetchPost: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
+      category: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,

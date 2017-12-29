@@ -74,4 +74,21 @@ export default {
     const path = `posts/${id}`;
     return doPut(path, params);
   },
+  fetchComment: (id) => {
+    const path = `comments/${id}`;
+    return doGet(path);
+  },
+  updateComment: (id, params) => {
+    const path = `comments/${id}`;
+    return doPut(path, params);
+  },
+  addComment: (params) => {
+    const path = 'comments';
+    return doPost(path, params);
+  },
+  addPost: (params) => {
+    const path = 'posts';
+    console.log('params', params);
+    return doPost(path, params);
+  },
 };

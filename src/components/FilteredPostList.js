@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import PostList from './PostList';
+import { Link, withRouter } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 import { fetchPosts } from '../actions';
+import PostList from './PostList';
 
 class FilteredPostList extends Component {
   componentDidMount() {
@@ -22,7 +23,13 @@ class FilteredPostList extends Component {
 
   render() {
     const { posts } = this.props;
-    return <PostList posts={posts} />;
+
+    return (
+      <div>
+        <PostList posts={posts} />
+        <Button color="primary" tag={Link} to="/posts/new">Add post</Button>
+      </div>
+    );
   }
 }
 

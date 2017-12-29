@@ -38,12 +38,19 @@ const PostValidatingForm = ({
   />
 );
 
+PostValidatingForm.defaultProps = {
+  author: '',
+  body: '',
+  category: '',
+  title: '',
+};
+
 PostValidatingForm.propTypes = {
-  author: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
+  author: PropTypes.string,
+  body: PropTypes.string,
+  category: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default PostValidatingForm;

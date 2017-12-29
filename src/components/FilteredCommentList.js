@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 import { fetchComments } from '../actions';
 import CommentList from './CommentList';
@@ -21,8 +22,13 @@ class FilteredCommentList extends Component {
   }
 
   render() {
-    const { comments } = this.props;
-    return <CommentList comments={comments} />;
+    const { comments, match: { params: { category, id } } } = this.props;
+    return (
+      <div>
+        <CommentList comments={comments} />
+        <Button color="primary" tag={Link} to={`/${category}/${id}/comments/new`}>Add comment</Button>
+      </div>
+    );
   }
 }
 
