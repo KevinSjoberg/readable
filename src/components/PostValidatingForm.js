@@ -41,7 +41,7 @@ const PostValidatingForm = ({
 PostValidatingForm.defaultProps = {
   author: '',
   body: '',
-  category: '',
+  category: 'react',
   title: '',
 };
 
