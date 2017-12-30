@@ -32,6 +32,7 @@ class PostDetail extends Component {
       author,
       body,
       category,
+      commentCount,
       timestamp,
       title,
     } = post;
@@ -43,7 +44,8 @@ class PostDetail extends Component {
           Written by {author} in {category} {moment(timestamp).fromNow()}
         </p>
         <p>{body}</p>
-        <div className="d-flex flex-row-reverse text-muted justify-content-between">
+        <div className="d-flex text-muted justify-content-between">
+          <span className="mr-auto">{commentCount} comments</span>
           <div className="d-flex justify-content-between w-25">
             <PostVote post={post} />
             <PostActions post={post} />

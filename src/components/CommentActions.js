@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { removeComment } from '../actions/comments';
+import { fetchPost } from '../actions/posts';
 import Actions from './Actions';
 
 const CommentActions = ({
@@ -30,8 +31,11 @@ CommentActions.propTypes = {
   }).isRequired,
 };
 
-const mapDispatchToProps = (dispatch, { comment: { id } }) => ({
-  handleRemove: () => dispatch(removeComment(id)),
+const mapDispatchToProps = (dispatch, { comment: { id, parentId } }) => ({
+  handleRemove: () => {
+    dispatch(removeComment(id))
+      .then(() => dispatch(fetchPost(parentId)));
+  },
 });
 
 export default withRouter(connect(

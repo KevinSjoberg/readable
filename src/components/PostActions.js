@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   handleRemove: () => {
     const { match: { params: { category } }, post: { id } } = ownProps;
     const redirectTo = category ? `/${category}` : '/';
+
     dispatch(removePost(id))
       .then(() => ownProps.history.push(redirectTo));
   },
