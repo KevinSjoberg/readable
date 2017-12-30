@@ -1,41 +1,33 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import uuidv4 from 'uuid/v4';
 
 import { addComment } from '../actions/comments';
 import CommentValidatingForm from './CommentValidatingForm';
 
-class CommentAdd extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(isValid, fields) {
-    const { match: { params: { category, postId } } } = this.props;
+const CommentAdd = (props) => {
+  const handleSubmit = (isValid, fields) => {
+    const { match: { params: { category, postId } } } = props;
 
     if (isValid) {
-      this.props.addComment({
+      props.addComment({
         ...fields,
         id: uuidv4(),
         parentId: postId,
         timestamp: Date.now(),
       })
-        .then(() => this.props.history.push(`/${category}/${postId}`));
+        .then(() => props.history.push(`/${category}/${postId}`));
     }
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <h1>Add comment</h1>
-        <CommentValidatingForm onSubmit={this.handleSubmit} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h1>Add comment</h1>
+      <CommentValidatingForm onSubmit={handleSubmit} />
+    </div>
+  );
+};
 
 CommentAdd.propTypes = {
   addComment: PropTypes.func.isRequired,
@@ -50,7 +42,4 @@ CommentAdd.propTypes = {
   }).isRequired,
 };
 
-export default connect(
-  null,
-  { addComment },
-)(CommentAdd);
+export default connect(null, { addComment })(CommentAdd);
