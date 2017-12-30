@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { downvotePost, upvotePost } from '../actions';
+import { downvotePost, upvotePost } from '../actions/posts';
 import Vote from './Vote';
 
 const PostVote = ({ post, ...rest }) => (

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uuidv4 } from 'uuid';
 
-import { addComment } from '../actions';
+import { addComment } from '../actions/comments';
 import CommentValidatingForm from './CommentValidatingForm';
 
 class CommentAdd extends Component {

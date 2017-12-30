@@ -24,7 +24,7 @@ import {
   UPVOTE_COMMENT_FAILURE,
   UPVOTE_COMMENT_REQUEST,
   UPVOTE_COMMENT_SUCCESS,
-} from '../actions';
+} from '../actions/comments';
 
 const allIds = (state = [], action) => {
   switch (action.type) {

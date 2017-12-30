@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ListGroup } from 'reactstrap';
 
-import { fetchCategories } from '../actions';
+import { fetchCategories } from '../actions/categories';
 import { getCategories } from '../reducers';
 import Category from './Category';
 

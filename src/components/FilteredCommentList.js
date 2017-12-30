@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 import CommentList from './CommentList';
-import { fetchComments } from '../actions';
+import { fetchComments } from '../actions/comments';
 import { getComments } from '../reducers';
 
 class FilteredCommentList extends Component {

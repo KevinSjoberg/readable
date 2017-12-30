@@ -1,3 +1,7 @@
+import { normalize } from 'normalizr';
+
+import * as schema from '../api/schema';
+
 const HOST = 'http://localhost:3001';
 const AUTHORIZATION = 'f1604e2153b557e0a3f70efe9be72a71';
 
@@ -38,64 +42,80 @@ const doPut = (path, params) =>
   });
 
 export default {
-  fetchCategories: () => {
-    const path = 'categories';
-    return doGet(path);
-  },
-  fetchPost: (id) => {
-    const path = `posts/${id}`;
-    return doGet(path);
-  },
+  addComment: params => (
+    doPost('comments', params)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comment))
+  ),
+  addPost: params => (
+    doPost('posts', params)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.post))
+  ),
+  downvoteComment: id => (
+    doPost(`comments/${id}`, { option: 'downVote' })
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comment))
+  ),
+  downvotePost: id => (
+    doPost(`posts/${id}`, { option: 'downVote' })
+      .then(response => response.json())
+      .then(json => normalize(json, schema.post))
+  ),
+  fetchCategories: () => (
+    doGet('categories')
+      .then(response => response.json())
+      .then(json => normalize(json.categories, schema.categories))
+  ),
+  fetchComment: id => (
+    doGet(`comments/${id}`)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comment))
+  ),
+  fetchPost: id => (
+    doGet(`posts/${id}`)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.post))
+  ),
+  fetchComments: postId => (
+    doGet(`posts/${postId}/comments`)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comments))
+  ),
   fetchPosts: (category) => {
     const path = category ? `${category}/posts` : 'posts';
-    return doGet(path);
+    return doGet(path)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.posts));
   },
-  upvotePost: (id) => {
-    const path = `posts/${id}`;
-    return doPost(path, { option: 'upVote' });
-  },
-  downvotePost: (id) => {
-    const path = `posts/${id}`;
-    return doPost(path, { option: 'downVote' });
-  },
-  upvoteComment: (id) => {
-    const path = `comments/${id}`;
-    return doPost(path, { option: 'upVote' });
-  },
-  downvoteComment: (id) => {
-    const path = `comments/${id}`;
-    return doPost(path, { option: 'downVote' });
-  },
-  removePost: (id) => {
-    const path = `posts/${id}`;
-    return doDelete(path);
-  },
-  fetchComments: (postId) => {
-    const path = `posts/${postId}/comments`;
-    return doGet(path);
-  },
-  removeComment: (id) => {
-    const path = `comments/${id}`;
-    return doDelete(path);
-  },
-  updatePost: (id, params) => {
-    const path = `posts/${id}`;
-    return doPut(path, params);
-  },
-  fetchComment: (id) => {
-    const path = `comments/${id}`;
-    return doGet(path);
-  },
-  updateComment: (id, params) => {
-    const path = `comments/${id}`;
-    return doPut(path, params);
-  },
-  addComment: (params) => {
-    const path = 'comments';
-    return doPost(path, params);
-  },
-  addPost: (params) => {
-    const path = 'posts';
-    return doPost(path, params);
-  },
+  removeComment: id => (
+    doDelete(`comments/${id}`)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comment))
+  ),
+  removePost: id => (
+    doDelete(`posts/${id}`)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.post))
+  ),
+  updateComment: (id, params) => (
+    doPut(`comments/${id}`, params)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comment))
+  ),
+  updatePost: (id, params) => (
+    doPut(`posts/${id}`, params)
+      .then(response => response.json())
+      .then(json => normalize(json, schema.post))
+  ),
+  upvoteComment: id => (
+    doPost(`comments/${id}`, { option: 'upVote' })
+      .then(response => response.json())
+      .then(json => normalize(json, schema.comment))
+  ),
+  upvotePost: id => (
+    doPost(`posts/${id}`, { option: 'upVote' })
+      .then(response => response.json())
+      .then(json => normalize(json, schema.post))
+  ),
 };

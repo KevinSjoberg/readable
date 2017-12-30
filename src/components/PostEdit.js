@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchPost, updatePost } from '../actions';
+import { fetchPost, updatePost } from '../actions/posts';
 import { getPost } from '../reducers';
 import PostValidatingForm from './PostValidatingForm';
 

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { fetchPost } from '../actions';
+import { fetchPost } from '../actions/posts';
 import { getPost } from '../reducers';
 import FilteredCommentList from './FilteredCommentList';
 import PostActions from './PostActions';

@@ -24,7 +24,7 @@ import {
   UPVOTE_POST_FAILURE,
   UPVOTE_POST_REQUEST,
   UPVOTE_POST_SUCCESS,
-} from '../actions';
+} from '../actions/posts';
 
 const allIds = (state = [], action) => {
   switch (action.type) {

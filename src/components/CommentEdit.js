@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchComment, updateComment } from '../actions';
+import { fetchComment, updateComment } from '../actions/comments';
 import { getComment } from '../reducers';
 import CommentValidatingForm from './CommentValidatingForm';
 

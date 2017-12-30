@@ -4,12 +4,12 @@ import {
   FETCH_CATEGORIES_FAILURE,
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_SUCCESS,
-} from '../actions';
+} from '../actions/categories';
 
 const allIds = (state = [], action) => {
   switch (action.type) {
     case FETCH_CATEGORIES_SUCCESS:
-      return action.categories.map(category => category.path);
+      return action.response.result;
     default:
       return state;
   }
@@ -18,10 +18,7 @@ const allIds = (state = [], action) => {
 const byId = (state = {}, action) => {
   switch (action.type) {
     case FETCH_CATEGORIES_SUCCESS:
-      return action.categories.reduce((nextState, category) => ({
-        ...nextState,
-        [category.path]: category,
-      }), {});
+      return action.response.entities.categories;
     default:
       return state;
   }

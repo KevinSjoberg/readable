@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { removePost } from '../actions';
+import { removePost } from '../actions/posts';
 import Actions from './Actions';
 
 const PostActions = ({
