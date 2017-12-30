@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { uuidv4 } from 'uuid';
+import uuidv4 from 'uuid/v4';
 
 import { addComment } from '../actions/comments';
 import CommentValidatingForm from './CommentValidatingForm';

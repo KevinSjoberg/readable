@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { uuidv4 } from 'uuid';
+import uuidv4 from 'uuid/v4';
 
 import { addPost } from '../actions/posts';
 import PostValidatingForm from './PostValidatingForm';
@@ -15,13 +15,10 @@ class PostAdd extends Component {
 
   handleSubmit(isValid, fields) {
     if (isValid) {
-      this.props.addPost({
-        ...fields,
-        id: uuidv4(),
-        timestamp: Date.now(),
-      })
-        .then(({ post: { category } }) => {
-          this.props.history.push(`/${category}`);
+      this.props.addPost({ ...fields, id: uuidv4(), timestamp: Date.now() })
+        .then(({ response }) => {
+          const { entities: { posts }, result } = response;
+          this.props.history.push(`/${posts[result].category}`);
         });
     }
   }
