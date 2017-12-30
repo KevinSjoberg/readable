@@ -123,6 +123,7 @@ export default combineReducers({
 });
 
 export const getPost = (state, id) => state.byId[id];
+export const getIsFetching = state => state.isFetching;
 export const getPosts = state => state.allIds.map(id => state.byId[id]);
 export const getPostSortFilter = state => state.sortFilter;
 export const getSortedPosts = (state) => {

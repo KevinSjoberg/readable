@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchPost, updatePost } from '../actions/posts';
-import { getPost } from '../reducers';
+import { getIsFetchingPosts, getPost } from '../reducers';
+import NotFound from './NotFound';
 import PostValidatingForm from './PostValidatingForm';
 
 class PostEdit extends Component {
@@ -30,22 +31,27 @@ class PostEdit extends Component {
   }
 
   render() {
-    const { post } = this.props;
+    const { isFetching, post } = this.props;
+
+    if (isFetching) {
+      return <h1>Loading...</h1>;
+    }
+
+    if (!post) {
+      return <NotFound />;
+    }
 
     return (
-      post
-        ? (
-          <div>
-            <h1>Edit post</h1>
-            <PostValidatingForm onSubmit={this.handleSubmit} {...post} />
-          </div>
-        )
-        : <h1>Loading...</h1>
+      <div>
+        <h1>Edit post</h1>
+        <PostValidatingForm onSubmit={this.handleSubmit} {...post} />
+      </div>
     );
   }
 }
 
 PostEdit.defaultProps = {
+  isFetching: true,
   post: null,
 };
 
@@ -54,6 +60,7 @@ PostEdit.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  isFetching: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
       category: PropTypes.string.isRequired,
@@ -70,6 +77,7 @@ PostEdit.propTypes = {
 };
 
 const mapStateToProps = (state, { match: { params: { id } } }) => ({
+  isFetching: getIsFetchingPosts(state),
   post: getPost(state, id),
 });
 

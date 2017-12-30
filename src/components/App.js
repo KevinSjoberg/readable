@@ -6,6 +6,7 @@ import CategoryList from './CategoryList';
 import CommentAdd from './CommentAdd';
 import CommentEdit from './CommentEdit';
 import FilteredPostList from './FilteredPostList';
+import NotFound from './NotFound';
 import PostAdd from './PostAdd';
 import PostDetail from './PostDetail';
 import PostEdit from './PostEdit';
@@ -30,6 +31,7 @@ const App = () => (
             <Route exact path="/:category/:id/edit" component={PostEdit} />
             <Route exact path="/:category/:postId/comments/new" component={CommentAdd} />
             <Route exact path="/:category/:postId/comments/:id/edit" component={CommentEdit} />
+            <Route component={NotFound} />
           </Switch>
         </Col>
       </Row>

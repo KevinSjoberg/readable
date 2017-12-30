@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { fetchPost } from '../actions/posts';
-import { getPost } from '../reducers';
+import { getIsFetchingPosts, getPost } from '../reducers';
 import FilteredCommentList from './FilteredCommentList';
+import NotFound from './NotFound';
 import PostActions from './PostActions';
 import PostVote from './PostVote';
 
@@ -17,20 +18,23 @@ class PostDetail extends Component {
   }
 
   render() {
-    if (!this.props.post) {
+    const { isFetching, post } = this.props;
+
+    if (isFetching) {
       return <h1>Loading...</h1>;
     }
 
+    if (!post) {
+      return <NotFound />;
+    }
+
     const {
-      post: {
-        author,
-        body,
-        category,
-        timestamp,
-        title,
-      },
-      post,
-    } = this.props;
+      author,
+      body,
+      category,
+      timestamp,
+      title,
+    } = post;
 
     return (
       <div>
@@ -54,10 +58,12 @@ class PostDetail extends Component {
 
 PostDetail.defaultProps = {
   post: null,
+  isFetching: true,
 };
 
 PostDetail.propTypes = {
   fetchPost: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -75,6 +81,7 @@ PostDetail.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
+  isFetching: getIsFetchingPosts(state),
   post: getPost(state, ownProps.match.params.id),
 });
 
