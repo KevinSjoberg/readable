@@ -19,11 +19,13 @@ class PostEdit extends Component {
   }
 
   handleSubmit(isValid, fields) {
-    const { match: { params: { category, id } } } = this.props;
-
     if (isValid) {
+      const { match: { params: { id } } } = this.props;
       this.props.updatePost(id, fields)
-        .then(() => this.props.history.push(`/${category}/${id}`));
+        .then(({ response }) => {
+          const { entities: { posts }, result } = response;
+          this.props.history.push(`/${posts[result].category}/${id}`);
+        });
     }
   }
 
