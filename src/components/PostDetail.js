@@ -29,6 +29,7 @@ class PostDetail extends Component {
         timestamp,
         title,
       },
+      post,
     } = this.props;
 
     return (
@@ -40,8 +41,8 @@ class PostDetail extends Component {
         <p>{body}</p>
         <div className="d-flex flex-row-reverse text-muted justify-content-between">
           <div className="d-flex justify-content-between w-25">
-            <PostVote post={this.props.post} />
-            <PostActions post={this.props.post} />
+            <PostVote post={post} />
+            <PostActions post={post} />
           </div>
         </div>
         <hr />
