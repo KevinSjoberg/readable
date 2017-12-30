@@ -18,6 +18,7 @@ import {
   REMOVE_POST_FAILURE,
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
+  SET_POST_SORT_FILTER,
   UPDATE_POST_FAILURE,
   UPDATE_POST_REQUEST,
   UPDATE_POST_SUCCESS,
@@ -103,13 +104,34 @@ const isFetching = (state = false, action) => {
   }
 };
 
+const sortFilter = (state = 'popular', action) => {
+  switch (action.type) {
+    case SET_POST_SORT_FILTER:
+      return action.sortFilter;
+    default:
+      return state;
+  }
+};
+
 
 export default combineReducers({
   allIds,
   byId,
   errorMessage,
   isFetching,
+  sortFilter,
 });
 
 export const getPost = (state, id) => state.byId[id];
 export const getPosts = state => state.allIds.map(id => state.byId[id]);
+export const getPostSortFilter = state => state.sortFilter;
+export const getSortedPosts = (state) => {
+  switch (state.sortFilter) {
+    case 'new':
+      return getPosts(state).sort((a, b) => b.timestamp - a.timestamp);
+    case 'popular':
+      return getPosts(state).sort((a, b) => b.voteScore - a.voteScore);
+    default:
+      return getPosts(state);
+  }
+};

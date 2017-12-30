@@ -5,8 +5,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 import { fetchPosts } from '../actions/posts';
-import { getPosts } from '../reducers';
+import { getSortedPosts } from '../reducers';
 import PostList from './PostList';
+import PostNav from './PostNav';
 
 class FilteredPostList extends Component {
   componentDidMount() {
@@ -27,6 +28,7 @@ class FilteredPostList extends Component {
 
     return (
       <div>
+        <PostNav />
         <PostList posts={posts} />
         <Button color="primary" tag={Link} to="/posts/new">Add post</Button>
       </div>
@@ -40,7 +42,8 @@ FilteredPostList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  posts: getPosts(state),
+  sortFilter: state.sortFilter,
+  posts: getSortedPosts(state),
 });
 
 export default withRouter(connect(

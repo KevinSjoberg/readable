@@ -60,6 +60,12 @@ export const removePost = id => (dispatch) => {
     .catch(errorMessage => dispatch({ type: REMOVE_POST_FAILURE, errorMessage }));
 };
 
+export const SET_POST_SORT_FILTER = 'SET_POST_SORT_FILTER';
+export const setPostSortFilter = sortFilter => ({
+  type: SET_POST_SORT_FILTER,
+  sortFilter,
+});
+
 export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
 export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
