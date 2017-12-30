@@ -50,12 +50,20 @@ export default {
     const path = category ? `${category}/posts` : 'posts';
     return doGet(path);
   },
-  upvote: (entity, id) => {
-    const path = `${entity}s/${id}`;
+  upvotePost: (id) => {
+    const path = `posts/${id}`;
     return doPost(path, { option: 'upVote' });
   },
-  downvote: (entity, id) => {
-    const path = `${entity}s/${id}`;
+  downvotePost: (id) => {
+    const path = `posts/${id}`;
+    return doPost(path, { option: 'downVote' });
+  },
+  upvoteComment: (id) => {
+    const path = `comments/${id}`;
+    return doPost(path, { option: 'upVote' });
+  },
+  downvoteComment: (id) => {
+    const path = `comments/${id}`;
     return doPost(path, { option: 'downVote' });
   },
   removePost: (id) => {
@@ -88,7 +96,6 @@ export default {
   },
   addPost: (params) => {
     const path = 'posts';
-    console.log('params', params);
     return doPost(path, params);
   },
 };

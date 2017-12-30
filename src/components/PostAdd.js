@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { uuidv4 } from 'uuid';
 
 import { addPost } from '../actions';
-import { randomId } from '../utils/helpers';
 import PostValidatingForm from './PostValidatingForm';
 
 class PostAdd extends Component {
@@ -17,7 +17,7 @@ class PostAdd extends Component {
     if (isValid) {
       this.props.addPost({
         ...fields,
-        id: randomId(),
+        id: uuidv4(),
         timestamp: Date.now(),
       })
         .then(({ post: { category } }) => {

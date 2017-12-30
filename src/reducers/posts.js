@@ -1,12 +1,14 @@
+import omit from 'lodash.omit';
+import union from 'lodash.union';
 import { combineReducers } from 'redux';
 
 import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
-  DOWNVOTE_ENTITY_FAILURE,
-  DOWNVOTE_ENTITY_REQUEST,
-  DOWNVOTE_ENTITY_SUCCESS,
+  DOWNVOTE_POST_FAILURE,
+  DOWNVOTE_POST_REQUEST,
+  DOWNVOTE_POST_SUCCESS,
   FETCH_POST_FAILURE,
   FETCH_POST_REQUEST,
   FETCH_POST_SUCCESS,
@@ -19,21 +21,21 @@ import {
   UPDATE_POST_FAILURE,
   UPDATE_POST_REQUEST,
   UPDATE_POST_SUCCESS,
-  UPVOTE_ENTITY_FAILURE,
-  UPVOTE_ENTITY_REQUEST,
-  UPVOTE_ENTITY_SUCCESS,
+  UPVOTE_POST_FAILURE,
+  UPVOTE_POST_REQUEST,
+  UPVOTE_POST_SUCCESS,
 } from '../actions';
-import { omit } from '../utils/helpers';
 
 const allIds = (state = [], action) => {
   switch (action.type) {
     case ADD_POST_SUCCESS:
+      return [...state, action.response.result];
     case FETCH_POST_SUCCESS:
-      return [...state, action.post.id];
+      return union(state, [action.response.result]);
     case FETCH_POSTS_SUCCESS:
-      return action.posts.map(post => post.id);
+      return action.response.result;
     case REMOVE_POST_SUCCESS:
-      return state.filter(id => id !== action.post.id);
+      return state.filter(id => id !== action.response.result);
     default:
       return state;
   }
@@ -42,28 +44,15 @@ const allIds = (state = [], action) => {
 const byId = (state = {}, action) => {
   switch (action.type) {
     case ADD_POST_SUCCESS:
+    case DOWNVOTE_POST_SUCCESS:
     case FETCH_POST_SUCCESS:
     case UPDATE_POST_SUCCESS:
-      return { ...state, [action.post.id]: action.post };
-    case FETCH_POSTS_SUCCESS: {
-      const nextState = { ...state };
-
-      action.posts.forEach((post) => {
-        nextState[post.id] = post;
-      });
-
-      return nextState;
-    }
-    case UPVOTE_ENTITY_SUCCESS:
-    case DOWNVOTE_ENTITY_SUCCESS: {
-      if (action.entityName !== 'post') {
-        return state;
-      }
-
-      return { ...state, [action.entity.id]: action.entity };
-    }
+    case UPVOTE_POST_SUCCESS:
+      return { ...state, ...action.response.entities.posts };
+    case FETCH_POSTS_SUCCESS:
+      return action.response.entities.posts || {};
     case REMOVE_POST_SUCCESS:
-      return omit(state, action.post.id);
+      return omit(state, [action.response.result]);
     default:
       return state;
   }
@@ -72,18 +61,17 @@ const byId = (state = {}, action) => {
 const errorMessage = (state = null, action) => {
   switch (action.type) {
     case ADD_POST_FAILURE:
+    case DOWNVOTE_POST_FAILURE:
     case FETCH_POST_FAILURE:
     case FETCH_POSTS_FAILURE:
     case REMOVE_POST_FAILURE:
     case UPDATE_POST_FAILURE:
+    case UPVOTE_POST_FAILURE:
       return action.errorMessage;
-    case DOWNVOTE_ENTITY_FAILURE:
-    case UPVOTE_ENTITY_FAILURE:
-      return action.entityName === 'post' ? action.errorMessage : state;
     case ADD_POST_REQUEST:
     case ADD_POST_SUCCESS:
-    case DOWNVOTE_ENTITY_REQUEST:
-    case DOWNVOTE_ENTITY_SUCCESS:
+    case DOWNVOTE_POST_REQUEST:
+    case DOWNVOTE_POST_SUCCESS:
     case FETCH_POST_REQUEST:
     case FETCH_POST_SUCCESS:
     case FETCH_POSTS_REQUEST:
@@ -92,8 +80,8 @@ const errorMessage = (state = null, action) => {
     case REMOVE_POST_SUCCESS:
     case UPDATE_POST_REQUEST:
     case UPDATE_POST_SUCCESS:
-    case UPVOTE_ENTITY_REQUEST:
-    case UPVOTE_ENTITY_SUCCESS:
+    case UPVOTE_POST_REQUEST:
+    case UPVOTE_POST_SUCCESS:
       return null;
     default:
       return state;

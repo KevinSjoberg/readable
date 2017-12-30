@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { uuidv4 } from 'uuid';
 
 import { addComment } from '../actions';
-import { randomId } from '../utils/helpers';
 import CommentValidatingForm from './CommentValidatingForm';
 
 class CommentAdd extends Component {
@@ -19,7 +19,7 @@ class CommentAdd extends Component {
     if (isValid) {
       this.props.addComment({
         ...fields,
-        id: randomId(),
+        id: uuidv4(),
         parentId: postId,
         timestamp: Date.now(),
       })

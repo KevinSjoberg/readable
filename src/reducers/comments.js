@@ -1,12 +1,14 @@
+import omit from 'lodash.omit';
+import union from 'lodash.union';
 import { combineReducers } from 'redux';
 
 import {
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  DOWNVOTE_ENTITY_FAILURE,
-  DOWNVOTE_ENTITY_REQUEST,
-  DOWNVOTE_ENTITY_SUCCESS,
+  DOWNVOTE_COMMENT_FAILURE,
+  DOWNVOTE_COMMENT_REQUEST,
+  DOWNVOTE_COMMENT_SUCCESS,
   FETCH_COMMENT_FAILURE,
   FETCH_COMMENT_REQUEST,
   FETCH_COMMENT_SUCCESS,
@@ -19,20 +21,21 @@ import {
   UPDATE_COMMENT_FAILURE,
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
-  UPVOTE_ENTITY_FAILURE,
-  UPVOTE_ENTITY_REQUEST,
-  UPVOTE_ENTITY_SUCCESS,
+  UPVOTE_COMMENT_FAILURE,
+  UPVOTE_COMMENT_REQUEST,
+  UPVOTE_COMMENT_SUCCESS,
 } from '../actions';
-import { omit } from '../utils/helpers';
 
 const allIds = (state = [], action) => {
   switch (action.type) {
+    case ADD_COMMENT_SUCCESS:
+      return [...state, action.response.result];
     case FETCH_COMMENT_SUCCESS:
-      return [...state, action.comment.id];
+      return union(state, [action.response.result]);
     case FETCH_COMMENTS_SUCCESS:
-      return action.comments.map(comment => comment.id);
+      return action.response.result;
     case REMOVE_COMMENT_SUCCESS:
-      return state.filter(id => id !== action.comment.id);
+      return state.filter(id => id !== action.response.result);
     default:
       return state;
   }
@@ -43,26 +46,13 @@ const byId = (state = {}, action) => {
     case ADD_COMMENT_SUCCESS:
     case FETCH_COMMENT_SUCCESS:
     case UPDATE_COMMENT_SUCCESS:
-      return { ...state, [action.comment.id]: action.comment };
-    case FETCH_COMMENTS_SUCCESS: {
-      const nextState = { ...state };
-
-      action.comments.forEach((comment) => {
-        nextState[comment.id] = comment;
-      });
-
-      return nextState;
-    }
-    case UPVOTE_ENTITY_SUCCESS:
-    case DOWNVOTE_ENTITY_SUCCESS: {
-      if (action.entityName !== 'comment') {
-        return state;
-      }
-
-      return { ...state, [action.entity.id]: action.entity };
-    }
+    case UPVOTE_COMMENT_SUCCESS:
+    case DOWNVOTE_COMMENT_SUCCESS:
+      return { ...state, ...action.response.entities.comments };
+    case FETCH_COMMENTS_SUCCESS:
+      return action.response.entities.comments || {};
     case REMOVE_COMMENT_SUCCESS:
-      return omit(state, action.comment.id);
+      return omit(state, [action.response.result]);
     default:
       return state;
   }
@@ -71,18 +61,17 @@ const byId = (state = {}, action) => {
 const errorMessage = (state = null, action) => {
   switch (action.type) {
     case ADD_COMMENT_FAILURE:
+    case DOWNVOTE_COMMENT_FAILURE:
     case FETCH_COMMENT_FAILURE:
     case FETCH_COMMENTS_FAILURE:
     case REMOVE_COMMENT_FAILURE:
     case UPDATE_COMMENT_FAILURE:
+    case UPVOTE_COMMENT_FAILURE:
       return action.errorMessage;
-    case DOWNVOTE_ENTITY_FAILURE:
-    case UPVOTE_ENTITY_FAILURE:
-      return action.entityName === 'comment' ? action.errorMessage : state;
     case ADD_COMMENT_REQUEST:
     case ADD_COMMENT_SUCCESS:
-    case DOWNVOTE_ENTITY_REQUEST:
-    case DOWNVOTE_ENTITY_SUCCESS:
+    case DOWNVOTE_COMMENT_REQUEST:
+    case DOWNVOTE_COMMENT_SUCCESS:
     case FETCH_COMMENT_REQUEST:
     case FETCH_COMMENT_SUCCESS:
     case FETCH_COMMENTS_REQUEST:
@@ -91,8 +80,8 @@ const errorMessage = (state = null, action) => {
     case REMOVE_COMMENT_SUCCESS:
     case UPDATE_COMMENT_REQUEST:
     case UPDATE_COMMENT_SUCCESS:
-    case UPVOTE_ENTITY_REQUEST:
-    case UPVOTE_ENTITY_SUCCESS:
+    case UPVOTE_COMMENT_REQUEST:
+    case UPVOTE_COMMENT_SUCCESS:
       return null;
     default:
       return state;

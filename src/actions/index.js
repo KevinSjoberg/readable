@@ -1,5 +1,7 @@
-import API from '../utils/api';
-import { getComment, getPost } from '../reducers';
+import { normalize } from 'normalizr';
+
+import API from '../api';
+import * as schema from '../api/schema';
 
 export const FETCH_CATEGORIES_REQUEST = 'FETCH_CATEGORIES_REQUEST';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
@@ -23,51 +25,73 @@ export const fetchPosts = category => (dispatch) => {
   return API
     .fetchPosts(category)
     .then(response => response.json())
-    .then(posts => dispatch({ type: FETCH_POSTS_SUCCESS, posts }))
+    .then(posts => dispatch({ type: FETCH_POSTS_SUCCESS, response: normalize(posts, schema.posts) }))
     .catch(errorMessage => dispatch({ type: FETCH_POSTS_FAILURE, errorMessage }));
 };
 
 export const FETCH_POST_REQUEST = 'FETCH_POST_REQUEST';
 export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS';
 export const FETCH_POST_FAILURE = 'FETCH_POST_FAILURE';
-export const fetchPost = id => (dispatch, getState) => {
-  if (getPost(getState(), id)) {
-    return Promise.resolve();
-  }
-
+export const fetchPost = id => (dispatch) => {
   dispatch({ type: FETCH_POST_REQUEST, id });
 
   return API
     .fetchPost(id)
     .then(response => response.json())
-    .then(post => dispatch({ type: FETCH_POST_SUCCESS, post }))
+    .then(post => dispatch({ type: FETCH_POST_SUCCESS, response: normalize(post, schema.post) }))
     .catch(errorMessage => dispatch({ type: FETCH_POST_FAILURE, errorMessage }));
 };
 
-export const UPVOTE_ENTITY_REQUEST = 'UPVOTE_ENTITY_REQUEST';
-export const UPVOTE_ENTITY_SUCCESS = 'UPVOTE_ENTITY_SUCCESS';
-export const UPVOTE_ENTITY_FAILURE = 'UPVOTE_ENTITY_FAILURE';
-export const upvote = (entityName, id) => (dispatch) => {
-  dispatch({ type: UPVOTE_ENTITY_REQUEST, entityName, id });
+export const UPVOTE_POST_REQUEST = 'UPVOTE_POST_REQUEST';
+export const UPVOTE_POST_SUCCESS = 'UPVOTE_POST_SUCCESS';
+export const UPVOTE_POST_FAILURE = 'UPVOTE_POST_FAILURE';
+export const upvotePost = id => (dispatch) => {
+  dispatch({ type: UPVOTE_POST_REQUEST, id });
 
   return API
-    .upvote(entityName, id)
+    .upvotePost(id)
     .then(response => response.json())
-    .then(entity => dispatch({ type: UPVOTE_ENTITY_SUCCESS, entity, entityName }))
-    .catch(errorMessage => dispatch({ type: UPVOTE_ENTITY_FAILURE, errorMessage, entityName }));
+    .then(post => dispatch({ type: UPVOTE_POST_SUCCESS, response: normalize(post, schema.post) }))
+    .catch(errorMessage => dispatch({ type: UPVOTE_POST_FAILURE, errorMessage }));
 };
 
-export const DOWNVOTE_ENTITY_REQUEST = 'DOWNVOTE_ENTITY_REQUEST';
-export const DOWNVOTE_ENTITY_SUCCESS = 'DOWNVOTE_ENTITY_SUCCESS';
-export const DOWNVOTE_ENTITY_FAILURE = 'DOWNVOTE_ENTITY_FAILURE';
-export const downvote = (entityName, id) => (dispatch) => {
-  dispatch({ type: UPVOTE_ENTITY_REQUEST, entityName, id });
+export const UPVOTE_COMMENT_REQUEST = 'UPVOTE_COMMENT_REQUEST';
+export const UPVOTE_COMMENT_SUCCESS = 'UPVOTE_COMMENT_SUCCESS';
+export const UPVOTE_COMMENT_FAILURE = 'UPVOTE_COMMENT_FAILURE';
+export const upvoteComment = id => (dispatch) => {
+  dispatch({ type: UPVOTE_COMMENT_REQUEST, id });
 
   return API
-    .downvote(entityName, id)
+    .upvoteComment(id)
     .then(response => response.json())
-    .then(entity => dispatch({ type: DOWNVOTE_ENTITY_SUCCESS, entity, entityName }))
-    .catch(errorMessage => dispatch({ type: DOWNVOTE_ENTITY_FAILURE, errorMessage, entityName }));
+    .then(comment => dispatch({ type: UPVOTE_COMMENT_SUCCESS, response: normalize(comment, schema.comment) }))
+    .catch(errorMessage => dispatch({ type: UPVOTE_COMMENT_FAILURE, errorMessage }));
+};
+
+export const DOWNVOTE_POST_REQUEST = 'DOWNVOTE_POST_REQUEST';
+export const DOWNVOTE_POST_SUCCESS = 'DOWNVOTE_POST_SUCCESS';
+export const DOWNVOTE_POST_FAILURE = 'DOWNVOTE_POST_FAILURE';
+export const downvotePost = id => (dispatch) => {
+  dispatch({ type: DOWNVOTE_POST_REQUEST, id });
+
+  return API
+    .downvotePost(id)
+    .then(response => response.json())
+    .then(post => dispatch({ type: DOWNVOTE_POST_SUCCESS, response: normalize(post, schema.post) }))
+    .catch(errorMessage => dispatch({ type: DOWNVOTE_POST_FAILURE, errorMessage }));
+};
+
+export const DOWNVOTE_COMMENT_REQUEST = 'DOWNVOTE_COMMENT_REQUEST';
+export const DOWNVOTE_COMMENT_SUCCESS = 'DOWNVOTE_COMMENT_SUCCESS';
+export const DOWNVOTE_COMMENT_FAILURE = 'DOWNVOTE_COMMENT_FAILURE';
+export const downvoteComment = id => (dispatch) => {
+  dispatch({ type: DOWNVOTE_COMMENT_REQUEST, id });
+
+  return API
+    .downvoteComment(id)
+    .then(response => response.json())
+    .then(comment => dispatch({ type: DOWNVOTE_COMMENT_SUCCESS, response: normalize(comment, schema.comment) }))
+    .catch(errorMessage => dispatch({ type: DOWNVOTE_COMMENT_FAILURE, errorMessage }));
 };
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
@@ -79,7 +103,7 @@ export const removePost = id => (dispatch) => {
   return API
     .removePost(id)
     .then(response => response.json())
-    .then(post => dispatch({ type: REMOVE_POST_SUCCESS, post }))
+    .then(post => dispatch({ type: REMOVE_POST_SUCCESS, response: normalize(post, schema.post) }))
     .catch(errorMessage => dispatch({ type: REMOVE_POST_FAILURE, errorMessage }));
 };
 
@@ -92,7 +116,7 @@ export const fetchComments = postId => (dispatch) => {
   return API
     .fetchComments(postId)
     .then(response => response.json())
-    .then(comments => dispatch({ type: FETCH_COMMENTS_SUCCESS, comments }))
+    .then(comments => dispatch({ type: FETCH_COMMENTS_SUCCESS, response: normalize(comments, schema.comments) }))
     .catch(errorMessage => dispatch({ type: FETCH_COMMENTS_FAILURE, errorMessage }));
 };
 
@@ -100,16 +124,12 @@ export const FETCH_COMMENT_REQUEST = 'FETCH_COMMENT_REQUEST';
 export const FETCH_COMMENT_SUCCESS = 'FETCH_COMMENT_SUCCESS';
 export const FETCH_COMMENT_FAILURE = 'FETCH_COMMENT_FAILURE';
 export const fetchComment = id => (dispatch, getState) => {
-  if (getComment(getState(), id)) {
-    return Promise.resolve();
-  }
-
   dispatch({ type: FETCH_COMMENT_REQUEST, id });
 
   return API
     .fetchComment(id)
     .then(response => response.json())
-    .then(comment => dispatch({ type: FETCH_COMMENT_SUCCESS, comment }))
+    .then(comment => dispatch({ type: FETCH_COMMENT_SUCCESS, response: normalize(comment, schema.comment) }))
     .catch(errorMessage => dispatch({ type: FETCH_COMMENT_FAILURE, errorMessage }));
 };
 
@@ -122,7 +142,7 @@ export const removeComment = id => (dispatch) => {
   return API
     .removeComment(id)
     .then(response => response.json())
-    .then(comment => dispatch({ type: REMOVE_COMMENT_SUCCESS, comment }))
+    .then(comment => dispatch({ type: REMOVE_COMMENT_SUCCESS, response: normalize(comment, schema.comment) }))
     .catch(errorMessage => dispatch({ type: REMOVE_COMMENT_FAILURE, errorMessage }));
 };
 
@@ -135,7 +155,7 @@ export const updatePost = (id, params) => (dispatch) => {
   return API
     .updatePost(id, params)
     .then(response => response.json())
-    .then(post => dispatch({ type: UPDATE_POST_SUCCESS, post }))
+    .then(post => dispatch({ type: UPDATE_POST_SUCCESS, response: normalize(post, schema.post) }))
     .catch(errorMessage => dispatch({ type: UPDATE_POST_FAILURE, errorMessage }));
 };
 
@@ -148,7 +168,7 @@ export const updateComment = (id, params) => (dispatch) => {
   return API
     .updateComment(id, params)
     .then(response => response.json())
-    .then(comment => dispatch({ type: UPDATE_COMMENT_SUCCESS, comment }))
+    .then(comment => dispatch({ type: UPDATE_COMMENT_SUCCESS, response: normalize(comment, schema.comment) }))
     .catch(errorMessage => dispatch({ type: UPDATE_COMMENT_FAILURE, errorMessage }));
 };
 
@@ -161,7 +181,7 @@ export const addComment = params => (dispatch) => {
   return API
     .addComment(params)
     .then(response => response.json())
-    .then(comment => dispatch({ type: ADD_COMMENT_SUCCESS, comment }))
+    .then(comment => dispatch({ type: ADD_COMMENT_SUCCESS, response: normalize(comment, schema.comment) }))
     .catch(errorMessage => dispatch({ type: ADD_COMMENT_FAILURE, errorMessage }));
 };
 
@@ -174,6 +194,6 @@ export const addPost = params => (dispatch) => {
   return API
     .addPost(params)
     .then(response => response.json())
-    .then(post => dispatch({ type: ADD_POST_SUCCESS, post }))
+    .then(post => dispatch({ type: ADD_POST_SUCCESS, response: normalize(post, schema.post) }))
     .catch(errorMessage => dispatch({ type: ADD_POST_FAILURE, errorMessage }));
 };
